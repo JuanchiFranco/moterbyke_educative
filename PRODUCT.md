@@ -31,8 +31,9 @@ Confirmado:
 - El modelo 3D es «Yamaha R1» de ejsnowy (https://sketchfab.com/3d-models/yamaha-r1-7b3343ad0c0f4cbe94238c734e1b731a), licencia CC BY 4.0, descargado por el agente con la sesión del usuario en Sketchfab y guardado en public/models/yamaha_r1.glb (10,2 MB, texturas de 1k). La licencia exige crédito al autor, que aparece en la barra inferior de la lección.
 - Las cinco piezas de los mandos son nodos propios del modelo (acelerador, maneta de freno, maneta de embrague, palanca de cambios, pedal de freno) y se animan sobre pivotes calculados al cargar.
 
+Decidido por el usuario el 2026-11-12: la educación es solo informativa. No hay examen ni prueba; la lección 1 es un estudio guiado mando a mando con un repaso final, sin puntuación.
+
 Construido en la lección 1 pero no confirmado como regla del producto:
-- Forma del aprendizaje: estudio guiado mando a mando seguido de una prueba sin pistas.
 - Idioma: español.
 - Dispositivos: pensado primero para escritorio y utilizable en móvil.
 

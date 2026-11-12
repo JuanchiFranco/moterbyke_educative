@@ -9,8 +9,6 @@ export interface ControlInfo {
   limb: string
   /** Nombre de la pieza, para la etiqueta sobre la moto. */
   part: string
-  /** Posición corta, sin nombrar ningún mando: sirve de respuesta en la prueba. */
-  spot: string
   /** Dónde está en la moto. */
   where: string
   /** Qué hace. */
@@ -45,7 +43,6 @@ export const CONTROLS: ControlInfo[] = [
     name: 'Acelerador',
     limb: 'Mano derecha',
     part: 'Puño del acelerador',
-    spot: 'Puño derecho',
     where: 'Puño derecho del manillar',
     does: 'Girar el puño hacia ti da gas: el motor empuja con más fuerza. Al soltarlo vuelve solo a cero.',
     gesture: 'Gira la muñeca hacia ti, poco a poco.',
@@ -59,7 +56,6 @@ export const CONTROLS: ControlInfo[] = [
     name: 'Freno delantero',
     limb: 'Mano derecha',
     part: 'Maneta de freno',
-    spot: 'Maneta derecha',
     where: 'Maneta derecha, delante del puño del acelerador',
     does: 'Frena la rueda delantera, que es la que aporta la mayor parte de la frenada.',
     gesture: 'Aprieta la maneta con los dedos, de forma progresiva.',
@@ -73,7 +69,6 @@ export const CONTROLS: ControlInfo[] = [
     name: 'Embrague',
     limb: 'Mano izquierda',
     part: 'Maneta de embrague',
-    spot: 'Maneta izquierda',
     where: 'Maneta izquierda del manillar',
     does: 'Al apretar la maneta, el motor deja de empujar la rueda. Se usa para arrancar, parar y cambiar de marcha.',
     gesture: 'Aprieta la maneta hasta el puño y suéltala despacio.',
@@ -87,7 +82,6 @@ export const CONTROLS: ControlInfo[] = [
     name: 'Palanca de cambios',
     limb: 'Pie izquierdo',
     part: 'Palanca de cambios',
-    spot: 'Junto al pie izquierdo',
     where: 'Delante del estribo izquierdo',
     does: 'Sube y baja de marcha. El patrón habitual es primera hacia abajo, punto muerto, y las demás hacia arriba.',
     gesture: 'Pisa con la puntera para bajar de marcha; levanta con el empeine para subir.',
@@ -101,7 +95,6 @@ export const CONTROLS: ControlInfo[] = [
     name: 'Freno trasero',
     limb: 'Pie derecho',
     part: 'Pedal de freno',
-    spot: 'Junto al pie derecho',
     where: 'Pedal delante del estribo derecho',
     does: 'Frena la rueda trasera. Ayuda a estabilizar la moto y a controlar las maniobras lentas.',
     gesture: 'Pisa el pedal con la puntera del pie derecho.',

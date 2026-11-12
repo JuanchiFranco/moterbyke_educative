@@ -408,69 +408,6 @@ ul {
   }
 }
 
-/* Prueba */
-.spots {
-  display: grid;
-  gap: 0.625rem;
-}
-
-.spot {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.95rem 1rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: var(--white);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  text-align: left;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
-}
-
-.spot[data-state='idle']:hover:not(:disabled) {
-  border-color: var(--ink);
-  background: var(--surface);
-}
-
-.spot:disabled {
-  border-style: dotted;
-  color: var(--ink-soft);
-}
-
-.spot[data-state='right'] {
-  border-color: var(--red);
-  background: var(--red);
-  color: var(--white);
-}
-
-.spot[data-state='wrong'] {
-  border: 2px dashed var(--ink);
-  color: var(--ink-soft);
-  text-decoration: line-through;
-}
-
-.feedback {
-  margin-top: 1.25rem;
-  font-size: 1.0625rem;
-  color: var(--ink-soft);
-  text-wrap: pretty;
-}
-
-.feedback[data-kind='right'] {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.feedback[data-kind='wrong'] {
-  color: var(--ink);
-  font-weight: 700;
-}
-
 /* Barra fija inferior: modelo a la izquierda, progreso y acciones a la derecha. */
 .foot {
   grid-area: foot;
@@ -597,8 +534,7 @@ ul {
       'foot';
   }
 
-  .lesson[data-phase='learn'],
-  .lesson[data-phase='quiz'] {
+  .lesson[data-phase='learn'] {
     grid-template-rows: 3.25rem minmax(13rem, 36dvh) minmax(0, 1fr) auto;
   }
 
@@ -700,20 +636,6 @@ ul {
 
   .card__body dd {
     padding-bottom: 0.5rem;
-  }
-
-  .spots {
-    gap: 0.375rem;
-  }
-
-  .spot {
-    padding: 0.55rem 0.875rem;
-    font-size: 1rem;
-  }
-
-  .feedback {
-    margin-top: 0.625rem;
-    font-size: 1rem;
   }
 
   .foot {

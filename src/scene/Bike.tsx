@@ -18,9 +18,9 @@ export interface BikeLayout {
 }
 
 interface BikeProps {
-  /** Mando resaltado y en movimiento; null en la prueba y en la vista general. */
+  /** Mando resaltado y en movimiento; null en la vista general y en el repaso. */
   activeId: ControlId | null
-  /** En la prueba no se da ninguna pista. */
+  /** Permite apagar el resaltado del mando activo. */
   showState: boolean
   animate: boolean
   onPick: (id: ControlId) => void
@@ -153,7 +153,7 @@ export function Bike({ activeId, showState, animate, onPick, onLayout }: BikePro
     layoutRef.current(layout)
   }, [layout])
 
-  // El mando activo se pinta de rojo; en la prueba no hay ninguna pista.
+  // El mando activo se pinta de rojo.
   useEffect(() => {
     for (const c of CONTROLS) {
       const rig = rigs[c.id]
@@ -173,7 +173,7 @@ export function Bike({ activeId, showState, animate, onPick, onLayout }: BikePro
     }
   }, [rigs, activeId, showState])
 
-  // Cada explicación va seguida de su prueba: el mando activo hace su gesto.
+  // Cada explicación va acompañada de su demostración: el mando activo hace su gesto.
   useFrame(({ clock }, dt) => {
     const t = clock.elapsedTime
     const press = animate ? (Math.sin(t * 2.4) + 1) / 2 : 0.6

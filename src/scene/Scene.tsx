@@ -12,7 +12,7 @@ interface SceneProps {
   /** Posiciones sacadas del modelo; hasta que carga no hay marcadores. */
   layout: BikeLayout | null
   onLayout: (layout: BikeLayout) => void
-  /** Marcadores numerados y color de estado; se apagan durante la prueba. */
+  /** Marcadores numerados y resaltado del mando activo. */
   showState: boolean
   view: { position: Vec3; target: Vec3 }
   reducedMotion: boolean
