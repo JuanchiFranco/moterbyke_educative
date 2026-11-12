@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-orientacion.html"
+        ],
+        "createdAt": "2026-11-12T01:03:25.224Z",
+        "reason": "agent decided: decision-round sketch of the orienteering-map challenger, whose course purple is the map standard's own ink; not shipping code"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-12T01:26:42.456Z",
+        "reason": "agent decided: spent decision-round sketch, written before DESIGN.md existed; not shipping code"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-12T01:26:42.549Z",
+        "reason": "agent decided: spent decision-round sketch, written before DESIGN.md existed; not shipping code"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-orientacion.html"
+        ],
+        "createdAt": "2026-11-12T01:26:42.634Z",
+        "reason": "agent decided: spent decision-round sketch, written before DESIGN.md existed; not shipping code"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+node_modules
+dist
+.impeccable/config.local.json
+
+# Herramientas y skills instaladas en local (incluyen binarios)
+.agent/
+.agents/
+.dsh/
+.gemini/
+.claude/skills/
+.claude/agents/
+.claude/settings.local.json
+.impeccable/hook.cache.json
