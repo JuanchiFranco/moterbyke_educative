@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Scene } from './scene/Scene'
 import type { BikeLayout } from './scene/Bike'
+import type { StageLayout } from './scene/Stage'
 import { LESSONS, type Section, type Vec3 } from './lesson/lessons'
 import { BIKES, DEFAULT_BIKE } from './lesson/bikes'
 
@@ -32,12 +33,21 @@ export function App() {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   // Mismo corte que la hoja de estilos: por debajo, el título sale del campo 3D.
   const compact = useMediaQuery('(max-width: 60rem)')
-  const [lessonIndex, setLessonIndex] = useState(0)
-  const [phase, setPhase] = useState<Phase>('intro')
-  const [index, setIndex] = useState(0)
+  // La lección y el tema pueden venir en la dirección (?leccion=3&tema=2): sirve para compartir un enlace directo.
+  const start = useMemo(() => {
+    const q = new URLSearchParams(window.location.search)
+    const li = Math.max(0, LESSONS.findIndex((l) => l.number === Number(q.get('leccion'))))
+    const t = Number(q.get('tema'))
+    const has = t >= 1 && t <= LESSONS[li].items.length
+    return { li, phase: (has ? 'learn' : 'intro') as Phase, index: has ? t - 1 : 0 }
+  }, [])
+  const [lessonIndex, setLessonIndex] = useState(start.li)
+  const [phase, setPhase] = useState<Phase>(start.phase)
+  const [index, setIndex] = useState(start.index)
   /** Temas vistos, por lección. */
   const [seenBy, setSeenBy] = useState<Record<string, ReadonlySet<string>>>({})
   const [layout, setLayout] = useState<BikeLayout | null>(null)
+  const [stageLayout, setStageLayout] = useState<StageLayout | null>(null)
   // La moto puede venir en la dirección (?moto=vespa): sirve para compartir un enlace directo.
   const [bike, setBike] = useState(() => BIKES.find((b) => b.id === new URLSearchParams(window.location.search).get('moto')) ?? DEFAULT_BIKE)
 
@@ -46,7 +56,15 @@ export function App() {
   const seen = seenBy[lesson.id] ?? new Set<string>()
   const active = phase === 'learn' ? items[index] : null
   const nextLesson = LESSONS[lessonIndex + 1]
-  const view = !layout ? FALLBACK_VIEW : active && layout.views[active.id] ? layout.views[active.id] : compact ? layout.compact : layout.overview
+  // Escenario del tema abierto (o el de la lección): la moto sola o una escena 3D con la moto dentro.
+  const stageId = (active ?? items[0]).stage ?? 'bike'
+  const stageData = stageId !== 'bike' && stageLayout?.id === stageId ? stageLayout : null
+  const stage = stageId === 'bike' ? layout : stageData
+  const view = !stage ? FALLBACK_VIEW : active && stage.views[active.id] ? stage.views[active.id] : compact ? stage.compact : stage.overview
+  // Sin escenario la moto está en el centro; en uno, donde dice el tema o el escenario (o no sale).
+  const bikePose = stageId === 'bike' ? undefined : (active?.bikePose ?? stageData?.bike ?? null)
+  const dim = stageData?.dim ?? 1
+  const loading = !layout || !stage
 
   // La ficha activa siempre queda a la vista dentro del panel.
   const activeCard = useRef<HTMLLIElement>(null)
@@ -79,6 +97,16 @@ export function App() {
     }
     return rows
   }
+
+  // La dirección refleja dónde estás, para poder compartirla.
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (lessonIndex > 0) url.searchParams.set('leccion', String(lesson.number))
+    else url.searchParams.delete('leccion')
+    if (phase === 'learn') url.searchParams.set('tema', String(index + 1))
+    else url.searchParams.delete('tema')
+    window.history.replaceState(null, '', url)
+  }, [lessonIndex, lesson.number, phase, index])
 
   const markSeen = (id: string) => setSeenBy((s) => ({ ...s, [lesson.id]: new Set(s[lesson.id] ?? []).add(id) }))
 
@@ -138,20 +166,17 @@ export function App() {
   return (
     <div className="lesson" data-phase={phase}>
       <header className="bar">
-        <nav className="bar__lessons" aria-label="Lecciones">
-          {LESSONS.map((l, i) => (
-            <button
-              key={l.id}
-              type="button"
-              className={i === lessonIndex ? 'bar__tab' : 'bar__link'}
-              aria-current={i === lessonIndex ? 'page' : undefined}
-              onClick={() => i !== lessonIndex && openLesson(i)}
-            >
-              Lección {l.number}
-            </button>
-          ))}
-        </nav>
-        <span className="bar__name">{lesson.title}</span>
+        <div className="bar__lessons">
+          <span className="bar__tab">Lección {lesson.number}</span>
+          <label className="sr" htmlFor="lesson-picker">Ir a otra lección</label>
+          <select id="lesson-picker" className="bar__select" value={lessonIndex} onChange={(e) => openLesson(Number(e.target.value))}>
+            {LESSONS.map((l, i) => (
+              <option key={l.id} value={i}>
+                {l.number}. {l.title}
+              </option>
+            ))}
+          </select>
+        </div>
         <span className="bar__status" aria-live="polite">{status}</span>
       </header>
 
@@ -159,10 +184,15 @@ export function App() {
         <div className="field__canvas">
           <Scene
             bike={bike}
+            stageId={stageId}
+            onStageLayout={setStageLayout}
+            bikePose={bikePose}
+            dim={dim}
+            bikeActiveId={stageId === 'bike' ? (active?.id ?? null) : null}
             items={items}
             activeId={active?.id ?? null}
             seen={seen}
-            layout={layout}
+            layout={stage}
             onLayout={setLayout}
             view={view}
             reducedMotion={reducedMotion}
@@ -173,8 +203,8 @@ export function App() {
           <h1>{title}</h1>
           <p>{subtitle}</p>
         </div>
-        {!layout && <p className="field__loading" role="status">Cargando la moto…</p>}
-        <p className="field__hint">Arrastra para girar la moto. Rueda o pellizca para acercarte.</p>
+        {loading && <p className="field__loading" role="status">Cargando…</p>}
+        <p className="field__hint">Arrastra para girar la vista. Rueda o pellizca para acercarte.</p>
       </main>
 
       <aside className="panel" aria-label={`Temas: ${lesson.title}`}>

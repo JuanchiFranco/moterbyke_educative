@@ -4,17 +4,28 @@ import { ContactShadows, Environment, Lightformer, OrbitControls, useGLTF } from
 import * as THREE from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { Bike, type BikeLayout } from './Bike'
+import { Stage, type StageLayout } from './Stage'
+import type { BikePose } from './scenarios'
 import type { Item, Vec3 } from '../lesson/lessons'
 import { DEFAULT_BIKE, type BikeSpec } from '../lesson/bikes'
 
 interface SceneProps {
   bike: BikeSpec
+  /** Escenario 3D que se muestra: «bike» es la moto sola. */
+  stageId: string
+  onStageLayout: (layout: StageLayout) => void
+  /** Dónde queda la moto en el escenario (null: no sale). */
+  bikePose?: BikePose | null
+  /** Luz del escenario: 1 es el estudio claro, menos es de noche. */
+  dim: number
+  /** Tema abierto cuando es de la moto; null en los escenarios. */
+  bikeActiveId: string | null
   /** Temas de la lección abierta: cada uno con pieza en la moto tiene su marcador numerado. */
   items: Item[]
   activeId: string | null
   seen: ReadonlySet<string>
   /** Posiciones sacadas del modelo; hasta que carga no hay marcadores. */
-  layout: BikeLayout | null
+  layout: Pick<BikeLayout, 'anchors'> | null
   onLayout: (layout: BikeLayout) => void
   view: { position: Vec3; target: Vec3 }
   reducedMotion: boolean
@@ -22,7 +33,7 @@ interface SceneProps {
 }
 
 /** Lleva la cámara al encuadre pedido y cede el mando en cuanto el usuario arrastra. */
-function CameraRig({ view, reducedMotion }: Pick<SceneProps, 'view' | 'reducedMotion'>) {
+function CameraRig({ view, reducedMotion, wide }: Pick<SceneProps, 'view' | 'reducedMotion'> & { wide: boolean }) {
   const controls = useRef<OrbitControlsImpl>(null)
   const camera = useThree((s) => s.camera)
   const aspect = useThree((s) => s.size.width / s.size.height)
@@ -68,7 +79,7 @@ function CameraRig({ view, reducedMotion }: Pick<SceneProps, 'view' | 'reducedMo
       makeDefault
       enablePan={false}
       minDistance={0.7}
-      maxDistance={7}
+      maxDistance={wide ? 60 : 7}
       maxPolarAngle={Math.PI / 2 - 0.04}
       onStart={() => {
         travelling.current = false
@@ -78,7 +89,7 @@ function CameraRig({ view, reducedMotion }: Pick<SceneProps, 'view' | 'reducedMo
 }
 
 /** Proyecta el ancla de cada mando a la pantalla y coloca ahí su marcador numerado. */
-function MarkerProjector({ slots, layout, items }: { slots: React.RefObject<(HTMLDivElement | null)[]>; layout: BikeLayout | null; items: Item[] }) {
+function MarkerProjector({ slots, layout, items }: { slots: React.RefObject<(HTMLDivElement | null)[]>; layout: Pick<BikeLayout, 'anchors'> | null; items: Item[] }) {
   const v = useMemo(() => new THREE.Vector3(), [])
   useFrame(({ camera, size }) => {
     items.forEach((item, i) => {
@@ -101,24 +112,34 @@ function MarkerProjector({ slots, layout, items }: { slots: React.RefObject<(HTM
   return null
 }
 
-export function Scene({ bike, items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
+export function Scene({ bike, stageId, onStageLayout, bikePose, dim, bikeActiveId, items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
   const slots = useRef<(HTMLDivElement | null)[]>([])
   return (
     <>
       <Canvas
         shadows
         dpr={[1, 2]}
-        camera={{ position: view.position, fov: 34, near: 0.1, far: 50 }}
+        camera={{ position: view.position, fov: 34, near: 0.1, far: 140 }}
         gl={{ antialias: true, alpha: true }}
         aria-label="Moto en 3D. Arrastra para girarla y toca un mando para estudiarlo."
         role="img"
       >
-        <hemisphereLight args={['#ffffff', '#b9babd', 0.9]} />
-        <directionalLight position={[3, 5, 2.5]} intensity={2} castShadow shadow-mapSize={[1024, 1024]} />
-        <directionalLight position={[-2, 2.5, -4]} intensity={1.2} />
+        <hemisphereLight args={['#ffffff', '#b9babd', 0.9 * dim]} />
+        <directionalLight
+          position={[3, 5, 2.5]}
+          intensity={2 * dim}
+          castShadow
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-left={-26}
+          shadow-camera-right={26}
+          shadow-camera-top={26}
+          shadow-camera-bottom={-26}
+          shadow-camera-far={80}
+        />
+        <directionalLight position={[-2, 2.5, -4]} intensity={1.2 * dim} />
 
         {/* Estudio hecho en código: paneles de luz que el cromado y el esmalte reflejan. */}
-        <Environment resolution={256} frames={1}>
+        <Environment resolution={256} frames={1} environmentIntensity={dim}>
           <color attach="background" args={['#dfe0e2']} />
           <Lightformer form="rect" intensity={4} position={[0, 5, 0]} rotation-x={Math.PI / 2} scale={[8, 3, 1]} />
           <Lightformer form="rect" intensity={2.5} position={[4, 1.5, 3]} rotation-y={-Math.PI / 3} scale={[4, 2, 1]} />
@@ -127,11 +148,13 @@ export function Scene({ bike, items, activeId, seen, layout, onLayout, view, red
         </Environment>
 
         <Suspense fallback={null}>
-          <Bike key={bike.id} bike={bike} activeId={activeId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
+          <Bike key={bike.id} bike={bike} pose={bikePose} activeId={bikeActiveId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
         </Suspense>
 
+        {stageId !== 'bike' && <Stage key={stageId} id={stageId} activeId={activeId} onLayout={onStageLayout} />}
+
         <ContactShadows position={[0, 0, 0]} scale={5} blur={2.4} far={1.6} opacity={0.38} />
-        <CameraRig view={view} reducedMotion={reducedMotion} />
+        <CameraRig view={view} reducedMotion={reducedMotion} wide={stageId !== 'bike'} />
         <MarkerProjector slots={slots} layout={layout} items={items} />
       </Canvas>
       <div className="markers">

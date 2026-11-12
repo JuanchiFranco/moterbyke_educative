@@ -4,6 +4,7 @@ import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { ALL_ITEMS, type Gesture, type Vec3 } from '../lesson/lessons'
 import type { BikeSpec } from '../lesson/bikes'
+import type { BikePose } from './scenarios'
 
 export interface View {
   position: Vec3
@@ -21,6 +22,8 @@ export interface BikeLayout {
 
 interface BikeProps {
   bike: BikeSpec
+  /** Dónde está la moto: null en un escenario que no la lleva. Sin pose, está en el centro. */
+  pose?: BikePose | null
   /** Tema abierto: sus piezas se resaltan y, si es un mando, hace su gesto. */
   activeId: string | null
   animate: boolean
@@ -138,7 +141,8 @@ function build(source: THREE.Object3D, bike: BikeSpec) {
   }
 
   for (const item of ALL_ITEMS) {
-    const specs = bike.nodes[item.id]
+    if (item.stage !== 'bike') continue
+    const specs = bike.nodes[item.nodesKey ?? item.id]
     if (!specs?.length) continue
     const found = specs.flatMap(resolve)
     const missing = specs.filter((s) => !resolve(s).length)
@@ -199,7 +203,7 @@ function build(source: THREE.Object3D, bike: BikeSpec) {
   return { holder, pivots, hits, tints, tintsOf, layout }
 }
 
-export function Bike({ bike, activeId, animate, onPick, onLayout }: BikeProps) {
+export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikeProps) {
   const gltf = useGLTF(bike.url)
   const built = useMemo(() => build(gltf.scene, bike), [gltf.scene, bike])
   const { holder, pivots, hits, tints, tintsOf, layout } = built
@@ -263,8 +267,9 @@ export function Bike({ bike, activeId, animate, onPick, onLayout }: BikeProps) {
     },
   })
 
+  const at = pose ?? { position: [0, 0, 0] as Vec3, rotationY: 0, pitch: 0 }
   return (
-    <group>
+    <group position={at.position} rotation={[0, at.rotationY, at.pitch ?? 0]} visible={pose !== null}>
       <primitive object={holder} />
       {/* Zona de toque generosa en los mandos: las manetas y pedales reales son finos. */}
       {hits.map((h) => (

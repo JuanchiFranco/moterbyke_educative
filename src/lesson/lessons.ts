@@ -1,3 +1,8 @@
+import { LESSON_RUTA, LESSON_FISICA, LESSON_PROTECCION, LESSON_REVISION } from './content/ruta'
+import { LESSON_PRACTICA, LESSON_MANIOBRAS } from './content/practica'
+import { LESSON_SENALES, LESSON_DEFENSIVA, LESSON_CONDICIONES } from './content/transito'
+import { LESSON_CARGA, LESSON_MANTENIMIENTO, LESSON_INCIDENTES, LESSON_CONSULTA } from './content/cuidado'
+
 export type Vec3 = [number, number, number]
 
 /** Gestos animados de los mandos: cada uno tiene su propio pivote en el modelo. */
@@ -25,6 +30,16 @@ export interface Item {
   part?: string
   /** Es un mando que se mueve: gesto animado y clic directo sobre la moto (solo en motos que traen la pieza separada). */
   gesture?: Gesture
+  /** Escenario 3D del tema («bike»: la moto sola). Si falta, el de la lección. */
+  stage?: string
+  /** En un escenario: grupos con nombre que se resaltan (halo rojo) y llevan el marcador. */
+  focus?: string[]
+  /** En un escenario: encuadre propio, en coordenadas del escenario. Si falta, se mira el grupo desde `view`. */
+  cam?: { position: Vec3; target: Vec3 }
+  /** En un escenario: dónde queda la moto en este tema. */
+  bikePose?: { position: Vec3; rotationY: number; pitch?: number }
+  /** Con qué clave de la ficha de la moto se buscan las piezas (por defecto, el id del tema). */
+  nodesKey?: string
 }
 
 export interface Lesson {
@@ -33,6 +48,8 @@ export interface Lesson {
   number: number
   title: string
   intro: string
+  /** Escenario por defecto de la lección; si falta, la moto sola. */
+  stage?: string
   items: Item[]
 }
 
@@ -297,7 +314,26 @@ const LESSON_MANDOS: Lesson = {
   ],
 }
 
-export const LESSONS: Lesson[] = [LESSON_MOTO, LESSON_MANDOS]
+/** Cada tema lleva ya resuelto su escenario: el suyo, el de su lección o la moto sola. */
+const withStage = (l: Lesson): Lesson => ({ ...l, items: l.items.map((i) => ({ ...i, stage: i.stage ?? l.stage ?? 'bike' })) })
+
+export const LESSONS: Lesson[] = [
+  LESSON_MOTO,
+  LESSON_MANDOS,
+  LESSON_RUTA,
+  LESSON_FISICA,
+  LESSON_PROTECCION,
+  LESSON_REVISION,
+  LESSON_PRACTICA,
+  LESSON_MANIOBRAS,
+  LESSON_SENALES,
+  LESSON_DEFENSIVA,
+  LESSON_CONDICIONES,
+  LESSON_CARGA,
+  LESSON_MANTENIMIENTO,
+  LESSON_INCIDENTES,
+  LESSON_CONSULTA,
+].map(withStage)
 
 /** Todos los temas de todas las lecciones: el modelo 3D se prepara una sola vez para todos. */
 export const ALL_ITEMS: Item[] = LESSONS.flatMap((l) => l.items)

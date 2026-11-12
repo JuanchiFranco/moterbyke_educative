@@ -121,6 +121,27 @@ ul {
   clip-path: polygon(0 0, 100% 0, calc(100% - 1.25rem) 100%, 0 100%);
 }
 
+.bar__select {
+  align-self: center;
+  max-width: 26rem;
+  min-height: 2.5rem;
+  margin-left: 0.75rem;
+  padding: 0 0.5rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.bar__select:hover {
+  color: var(--red);
+}
+
 .bar__link {
   display: flex;
   align-items: center;
@@ -609,6 +630,12 @@ ul {
 
   .bar__tab {
     padding: 0 1.75rem 0 1rem;
+  }
+
+  .bar__select {
+    max-width: 10.5rem;
+    margin-left: 0.25rem;
+    font-size: 1rem;
   }
 
   .bar__link {

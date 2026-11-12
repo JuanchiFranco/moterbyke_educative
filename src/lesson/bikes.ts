@@ -63,6 +63,9 @@ export const BIKES: BikeSpec[] = [
       rearBrake: ['Yam_R1_Brake_Lever'],
       luces: ['Yam_R1_Indicator_Switch', 'Yam_R1_Horn_Switch', 'Yam_R1_Lights_Switches', 'Yam_R1_Highbeam_Flasher'],
       postura: ['Yam_R1_Body_Seats_0', 'Yam_R1_Left_Rider_Footpeg', 'Yam_R1_Right_Rider_Footpeg'],
+      faros: ['Yam_R1_Headlights', 'Yam_R1_Taillight'],
+      cadena: ['Yam_R1_Chain'],
+      caballete: ['Yam_R1_Kick_Stand', 'Yam_R1_Throttle', 'Yam_R1_Front_Brake_Lever', 'Yam_R1_Clutch_Lever', 'Yam_R1_Gear_Lever', 'Yam_R1_Brake_Lever'],
     },
     credit: {
       title: 'Yamaha R1',
@@ -87,6 +90,7 @@ export const BIKES: BikeSpec[] = [
       tablero: ['Speedomter_low', 'Front_Light_low'],
       luces: ['Switch_box_low'],
       postura: ['Seat_low', 'Foot_Rest_low'],
+      faros: ['Front_Light_low', 'Break_Light_low'],
     },
     credit: {
       title: 'Worn Out Old School Vespa',
@@ -106,6 +110,7 @@ export const BIKES: BikeSpec[] = [
     nodes: {
       motor: ['mat:EngineMetal', 'mat:CastIronBlack'],
       ruedas: ['mat:Rubber'],
+      faros: ['mat:RedGlass', 'mat:Glass'],
     },
     credit: {
       title: 'Yamaha Motorcycle Fz 16',

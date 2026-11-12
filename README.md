@@ -2,10 +2,11 @@
 
 Curso interactivo en 3D para principiantes, solo informativo (sin examen). Cada tema se estudia sobre una moto 3D que resalta la pieza de la que se habla y, en los mandos, la mueve.
 
-- **Lección 1 · Conoce la motocicleta:** tipos de moto, chasis y suspensión, motor y transmisión, ruedas y llantas, frenos, dirección y manillar, cilindrada, potencia y peso, y tablero y testigos.
-- **Lección 2 · Mandos y postura:** acelerador, freno delantero, embrague, palanca de cambios, freno trasero, direccionales, pito y luces, y la postura de conducción.
+Son 15 lecciones, una por capítulo de la «Guía de estudio y práctica 2026»; el selector de la barra inferior permite saltar entre ellas y el enlace admite `?leccion=N&tema=M`:
 
-Los textos siguen la «Guía de estudio y práctica 2026» (capítulos 03 y 04). El resto de la guía (normativa, señales, conducción, mantenimiento) se irá añadiendo; sus capítulos de examen y simulacro no se implementan.
+1. Conoce la motocicleta · 2. Mandos y postura · 3. Ruta de aprendizaje y licencia · 4. Física sencilla del manejo · 5. Protección y equipo · 6. Revisión antes de salir · 7. Aprender a manejar paso a paso · 8. Maniobras esenciales · 9. Señales de tránsito y demarcaciones · 10. Conducción defensiva · 11. Curvas, pendientes, lluvia y noche · 12. Carga, pasajero y ruta · 13. Mantenimiento y cuidado · 14. Incidentes, primeros auxilios y convivencia · 15. Consulta rápida.
+
+Las lecciones 1 y 2 se estudian sobre la moto 3D. Las demás usan escenarios 3D hechos en código (carretera, patio de práctica, señales, intersección, rotonda, curva, lluvia, noche, incidente…) donde el tema activo se resalta; son esquemas pedagógicos, no medidas ni señales oficiales. Los capítulos de examen y simulacro (16 a 18) no se implementan: la educación es solo informativa.
 Proyecto educativo, no oficial. No está afiliado a Honda ni a Yamaha. El diseño de la interfaz se inspira en la estructura y el estilo de una página de producto de moto; no usa logotipos, fotos, vídeo ni código de ninguna marca.
 
 ## Cómo ejecutarlo
