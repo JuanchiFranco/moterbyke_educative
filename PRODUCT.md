@@ -26,14 +26,16 @@ Confirmado:
 - El aprendizaje ocurre sobre una representación 3D de la moto y su conducción.
 - El contenido cubre controles, maniobras, técnica y seguridad.
 
-- La lección 1 es «Conoce los mandos»: los cinco mandos de una moto manual con embrague (acelerador, freno delantero, embrague, palanca de cambios, freno trasero).
+- El contenido sale de la «Guía de estudio y práctica 2026» (PDF de 25 páginas que aportó el usuario, en la carpeta local guia/, que no se publica). El usuario pidió implementar primero lo que trata de las motos: capítulo 03 (componentes y tipos) y capítulo 04 (mandos y postura). Se dejan para después la normativa, las señales, la conducción, el mantenimiento y los primeros auxilios; los capítulos de examen y simulacro no se implementan porque la educación es solo informativa.
+- Lección 1, «Conoce la motocicleta» (8 temas): tipos de moto, chasis y suspensión, motor y transmisión, ruedas y llantas, frenos, dirección y manillar, cilindrada, potencia y peso, y tablero y testigos.
+- Lección 2, «Mandos y postura» (7 temas): acelerador, freno delantero, embrague, palanca de cambios, freno trasero, direccionales, pito y luces, y postura de conducción (los cinco mandos de una moto manual con embrague, más los interruptores y la postura).
 - La moto de la lección es la Yamaha R1 2020 (superdeportiva de 998 cc, 6 velocidades). El usuario pidió primero la Honda CB 190R 2.0, pero no existe un modelo 3D suyo con licencia libre; el 2026-11-12 pidió usar otra moto de alta cilindrada y eligió esta.
 - El modelo 3D es «Yamaha R1» de ejsnowy (https://sketchfab.com/3d-models/yamaha-r1-7b3343ad0c0f4cbe94238c734e1b731a), licencia CC BY 4.0, descargado por el agente con la sesión del usuario en Sketchfab y guardado en public/models/yamaha_r1.glb (10,2 MB, texturas de 1k). La licencia exige crédito al autor, que aparece en la barra inferior de la lección.
 - Las cinco piezas de los mandos son nodos propios del modelo (acelerador, maneta de freno, maneta de embrague, palanca de cambios, pedal de freno) y se animan sobre pivotes calculados al cargar.
 
-Decidido por el usuario el 2026-11-12: la educación es solo informativa. No hay examen ni prueba; la lección 1 es un estudio guiado mando a mando con un repaso final, sin puntuación.
+Decidido por el usuario el 2026-11-12: la educación es solo informativa. No hay examen ni prueba; cada lección es un estudio guiado tema a tema con un repaso final, sin puntuación.
 
-Construido en la lección 1 pero no confirmado como regla del producto:
+Construido en las lecciones pero no confirmado como regla del producto:
 - Idioma: español.
 - Dispositivos: pensado primero para escritorio y utilizable en móvil.
 

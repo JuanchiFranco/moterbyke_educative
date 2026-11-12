@@ -103,15 +103,36 @@ ul {
   border-bottom: 1px solid var(--red);
 }
 
+.bar__lessons {
+  display: flex;
+  align-items: stretch;
+}
+
 /* Pestaña roja en paralelogramo, como la de la sección de la web. */
 .bar__tab {
   display: flex;
   align-items: center;
   padding: 0 2.25rem 0 2rem;
+  border: 0;
   background: var(--red);
   color: var(--white);
   font-weight: 700;
+  cursor: default;
   clip-path: polygon(0 0, 100% 0, calc(100% - 1.25rem) 100%, 0 100%);
+}
+
+.bar__link {
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.bar__link:hover {
+  color: var(--red);
 }
 
 .bar__name {
@@ -374,31 +395,33 @@ ul {
   outline-offset: -5px;
 }
 
-/* Ficha del mando: filas de etiqueta y valor, como la tabla de especificaciones. */
+/* Ficha del tema: filas de etiqueta y texto, como la tabla de especificaciones. */
 .card__body {
   margin: 0 1rem 1rem;
   border-top: 1px solid var(--line);
   animation: open 0.45s var(--ease);
 }
 
-.card__body dt {
-  padding-top: 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 800;
-}
-
-.card__body dd {
-  padding: 0.125rem 0 0.75rem;
+.card__row {
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--line);
-  font-size: 1rem;
-  color: var(--ink);
 }
 
-.card__body dd:last-child {
+.card__row:last-child {
   border-bottom: 0;
   padding-bottom: 0;
 }
 
+.card__row dt {
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.card__row dd {
+  margin-top: 0.125rem;
+  font-size: 1rem;
+  color: var(--ink);
+}
 @keyframes open {
   from {
     clip-path: inset(0 0 100% 0);
@@ -497,7 +520,7 @@ ul {
 .stripe {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(var(--n, 5), 1fr);
   gap: 0.375rem;
 }
 
@@ -545,6 +568,10 @@ ul {
 
   .bar__tab {
     padding: 0 1.75rem 0 1rem;
+  }
+
+  .bar__link {
+    padding: 0 0.75rem;
   }
 
   .bar__name {
@@ -630,12 +657,8 @@ ul {
     gap: 0.375rem;
   }
 
-  .card__body dt {
-    padding-top: 0.5rem;
-  }
-
-  .card__body dd {
-    padding-bottom: 0.5rem;
+  .card__row {
+    padding: 0.5rem 0;
   }
 
   .foot {

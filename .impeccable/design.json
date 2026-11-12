@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-12T20:00:00Z",
-  "title": "Design System: Lección 1 · Conoce los mandos",
+  "generatedAt": "2026-11-12T23:00:00Z",
+  "title": "Design System: Guía de estudio y práctica 2026 · Lecciones de moto",
   "extensions": {
     "colorMeta": {
       "red": { "role": "primary", "displayName": "Corporate Red", "canonical": "#cc0000", "tonalRamp": ["#330000", "#520000", "#7a0000", "#a80000", "#cc0000", "#e04d4d", "#f0a0a0", "#fae6e6"] },
@@ -19,11 +19,11 @@
       "studio-scene": { "role": "neutral", "displayName": "Studio Scene Background", "canonical": "#dfe0e2", "tonalRamp": ["#6b6c6d", "#828384", "#99999b", "#b0b1b2", "#c8c9cb", "#dfe0e2", "#eeeeef", "#f8f8f9"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Title over the 3D field (lesson name, control name, completion line), with white halo." },
-      "headline": { "displayName": "Headline", "purpose": "Panel heading with red bar; bike name in bottom bar." },
-      "title": { "displayName": "Title", "purpose": "Control names, bar title." },
-      "body": { "displayName": "Body", "purpose": "Spec values and subtitle." },
-      "label": { "displayName": "Label", "purpose": "Spec-row labels, buttons, status." },
+      "display": { "displayName": "Display", "purpose": "Title over the 3D field (lesson title, topic name, completion line), with white halo." },
+      "headline": { "displayName": "Headline", "purpose": "Panel heading with red bar (Temas, Repaso); bike name in bottom bar." },
+      "title": { "displayName": "Title", "purpose": "Topic names on cards, lesson title in the top bar." },
+      "body": { "displayName": "Body", "purpose": "Spec-row text and subtitle." },
+      "label": { "displayName": "Label", "purpose": "Spec-row labels, buttons, lesson buttons, status." },
       "credit": { "displayName": "Credit", "purpose": "Unofficial-project note and CC BY 4.0 model credit in the bottom bar." }
     },
     "shadows": [
@@ -33,9 +33,9 @@
     ],
     "motion": [
       { "name": "ease", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Marker scale (0.4s), button press, card reveal (0.45s), progress fill (0.7s)." },
-      { "name": "state-fade", "value": "0.2s to 0.25s linear", "purpose": "Background and border colour changes on cards, markers and buttons." },
-      { "name": "camera-travel", "value": "exponential approach, rate 4.5 per second", "purpose": "Camera moves between computed views; yields to the user on drag; jumps when reduced motion is set." },
-      { "name": "control-gesture", "value": "sine at 2.4 rad/s on the control's pivot", "purpose": "The active control performs its gesture on the bike; static pose when reduced motion is set." }
+      { "name": "state-fade", "value": "0.2s to 0.25s", "purpose": "Background and border colour changes on cards, markers and buttons." },
+      { "name": "camera-travel", "value": "exponential approach, rate 4.5 per second", "purpose": "Camera moves between computed per-topic views; yields to the user on drag; jumps when reduced motion is set." },
+      { "name": "control-gesture", "value": "sine at 2.4 rad/s on the control's pivot", "purpose": "The five rider controls perform their gesture while active; static pose when reduced motion is set." }
     ],
     "breakpoints": [
       { "name": "compact", "value": "60rem" }
@@ -46,7 +46,7 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The red next action in the bottom bar (Empezar, Siguiente, Terminar, Volver al inicio).",
+      "description": "The red next action in the bottom bar (Empezar, Siguiente, Terminar, Ir a la lección 2, Volver al inicio).",
       "html": "<button class=\"ds-btn-go\">Siguiente</button>",
       "css": ".ds-btn-go { min-height: 48px; padding: 12px 28px; border: 1px solid #cc0000; border-radius: 8px; background: #cc0000; color: #fff; font: 600 1rem 'Figtree Variable', system-ui, sans-serif; cursor: pointer; transition: background-color .2s, transform .2s; } .ds-btn-go:hover { background: #a80000; border-color: #a80000; } .ds-btn-go:active { transform: translateY(1px); } .ds-btn-go:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; }"
     },
@@ -59,34 +59,34 @@
       "css": ".ds-btn { min-height: 48px; padding: 12px 28px; border: 1px solid #1d1d1d; border-radius: 8px; background: #fff; color: #1d1d1d; font: 600 1rem 'Figtree Variable', system-ui, sans-serif; cursor: pointer; transition: background-color .2s, transform .2s; } .ds-btn:hover { background: #f4f4f4; } .ds-btn:active { transform: translateY(1px); } .ds-btn:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; }"
     },
     {
-      "name": "Lesson Tab and Top Bar",
+      "name": "Lesson Tabs and Top Bar",
       "kind": "nav",
       "refersTo": "tab-lesson",
-      "description": "White bar with a red parallelogram tab, title and status.",
-      "html": "<header class=\"ds-bar\"><span class=\"ds-tab\">Lección 1</span><span class=\"ds-bar-name\">Conoce los mandos</span><span class=\"ds-status\">Mando 2 de 5</span></header>",
-      "css": ".ds-bar { display: flex; align-items: stretch; gap: 24px; height: 60px; padding-right: 32px; background: #fff; border-bottom: 1px solid #cc0000; font-family: 'Figtree Variable', system-ui, sans-serif; } .ds-tab { display: flex; align-items: center; padding: 0 36px 0 32px; background: #cc0000; color: #fff; font-weight: 700; clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 100%, 0 100%); } .ds-bar-name { align-self: center; font-size: 1.125rem; font-weight: 700; color: #1d1d1d; } .ds-status { align-self: center; margin-left: auto; color: #626262; font-size: .9375rem; font-variant-numeric: tabular-nums; }"
+      "description": "White bar with the open lesson as a red parallelogram tab, other lessons as plain soft-ink buttons that turn red on hover, then title and status.",
+      "html": "<header class=\"ds-bar\"><nav class=\"ds-lessons\"><button class=\"ds-tab\">Lección 1</button><button class=\"ds-link\">Lección 2</button></nav><span class=\"ds-bar-name\">Conoce la motocicleta</span><span class=\"ds-status\">Tema 2 de 8</span></header>",
+      "css": ".ds-bar { display: flex; align-items: stretch; gap: 24px; height: 60px; padding-right: 32px; background: #fff; border-bottom: 1px solid #cc0000; font-family: 'Figtree Variable', system-ui, sans-serif; } .ds-lessons { display: flex; align-items: stretch; } .ds-tab { display: flex; align-items: center; padding: 0 36px 0 32px; border: 0; background: #cc0000; color: #fff; font: 700 1rem 'Figtree Variable', system-ui, sans-serif; cursor: default; clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 100%, 0 100%); } .ds-link { display: flex; align-items: center; padding: 0 20px; border: 0; background: none; color: #626262; font: 600 1rem 'Figtree Variable', system-ui, sans-serif; cursor: pointer; } .ds-link:hover { color: #cc0000; } .ds-link:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; } .ds-bar-name { align-self: center; font-size: 1.125rem; font-weight: 700; color: #1d1d1d; } .ds-status { align-self: center; margin-left: auto; color: #626262; font-size: .9375rem; font-variant-numeric: tabular-nums; }"
     },
     {
       "name": "Panel Heading",
       "kind": "custom",
       "refersTo": "headline",
       "description": "Section title with the short red bar beneath.",
-      "html": "<h2 class=\"ds-h2\">Los cinco mandos</h2>",
+      "html": "<h2 class=\"ds-h2\">Temas</h2>",
       "css": ".ds-h2 { position: relative; margin: 0 0 22px; padding-bottom: 10px; font: 800 1.375rem/1.1 'Figtree Variable', system-ui, sans-serif; color: #1d1d1d; } .ds-h2::after { content: ''; position: absolute; left: 0; bottom: 0; width: 56px; height: 4px; background: #cc0000; }"
     },
     {
-      "name": "Control Card (active, with spec rows)",
+      "name": "Topic Card (active, with spec rows)",
       "kind": "card",
-      "refersTo": "card-control-active",
-      "description": "Grey card at rest, white with red border when active, opening into label and value rows.",
-      "html": "<div class=\"ds-card\"><button class=\"ds-card-head\"><span class=\"ds-num\">2</span><span class=\"ds-name\">Palanca de embrague</span><span class=\"ds-limb\">Mano izquierda</span></button><dl class=\"ds-body\"><dt>Qué hace</dt><dd>Desconecta el motor de la rueda trasera.</dd><dt>El gesto</dt><dd>Aprieta y suelta con suavidad.</dd></dl></div>",
-      "css": ".ds-card { width: 340px; border: 2px solid #cc0000; border-radius: 8px; background: #fff; font-family: 'Figtree Variable', system-ui, sans-serif; color: #1d1d1d; } .ds-card-head { width: 100%; display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; padding: 11px 16px; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; } .ds-card-head:focus-visible { outline: 3px solid #1d1d1d; outline-offset: -5px; } .ds-num { grid-row: 1 / 3; font-size: 1.5rem; font-weight: 800; line-height: 1; color: #cc0000; } .ds-name { font-size: 1.125rem; font-weight: 700; } .ds-limb { font-size: .875rem; color: #626262; } .ds-body { margin: 0 16px 16px; border-top: 1px solid #e0e0e0; } .ds-body dt { padding-top: 12px; font-size: .875rem; font-weight: 800; } .ds-body dd { margin: 0; padding: 2px 0 12px; border-bottom: 1px solid #e0e0e0; } .ds-body dd:last-child { border-bottom: 0; padding-bottom: 0; }"
+      "refersTo": "card-topic-active",
+      "description": "Grey card at rest, white with red border when active, opening into any number of label and text rows.",
+      "html": "<div class=\"ds-card\"><button class=\"ds-card-head\"><span class=\"ds-num\">2</span><span class=\"ds-name\">Palanca de embrague</span><span class=\"ds-limb\">Mano izquierda</span></button><dl class=\"ds-body\"><div class=\"ds-row\"><dt>Qué hace</dt><dd>Desconecta el motor de la rueda trasera.</dd></div><div class=\"ds-row\"><dt>El gesto</dt><dd>Aprieta y suelta con suavidad.</dd></div></dl></div>",
+      "css": ".ds-card { width: 340px; border: 2px solid #cc0000; border-radius: 8px; background: #fff; font-family: 'Figtree Variable', system-ui, sans-serif; color: #1d1d1d; } .ds-card-head { width: 100%; display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; padding: 11px 16px; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; } .ds-card-head:focus-visible { outline: 3px solid #1d1d1d; outline-offset: -5px; } .ds-num { grid-row: 1 / 3; font-size: 1.5rem; font-weight: 800; line-height: 1; color: #cc0000; } .ds-name { font-size: 1.125rem; font-weight: 700; } .ds-limb { font-size: .875rem; color: #626262; } .ds-body { margin: 0 16px 16px; border-top: 1px solid #e0e0e0; } .ds-row { padding: 12px 0; border-bottom: 1px solid #e0e0e0; } .ds-row:last-child { border-bottom: 0; padding-bottom: 0; } .ds-row dt { font-size: .875rem; font-weight: 800; } .ds-row dd { margin: 2px 0 0; }"
     },
     {
       "name": "Seen Card",
       "kind": "card",
-      "refersTo": "card-control",
-      "description": "Grey card for a control already seen: ink number and an ink check badge.",
+      "refersTo": "card-topic",
+      "description": "Grey card for a topic already seen: ink number and an ink check badge.",
       "html": "<div class=\"ds-seen\"><button class=\"ds-seen-head\"><span class=\"ds-seen-num\">1</span><span class=\"ds-seen-name\">Manillar</span><span class=\"ds-seen-limb\">Mano derecha</span><span class=\"ds-seen-done\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M3 8.5l3.2 3.2L13 4.8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></button></div>",
       "css": ".ds-seen { width: 340px; border: 2px solid #f4f4f4; border-radius: 8px; background: #f4f4f4; font-family: 'Figtree Variable', system-ui, sans-serif; color: #1d1d1d; transition: background-color .25s, border-color .25s; } .ds-seen:hover { border-color: #bdbdbd; } .ds-seen-head { width: 100%; display: grid; grid-template-columns: 2rem 1fr auto; column-gap: 12px; align-items: center; padding: 11px 16px; border: 0; border-radius: 6px; background: none; text-align: left; font: inherit; cursor: pointer; } .ds-seen-head:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; } .ds-seen-num { grid-row: 1 / 3; font-size: 1.5rem; font-weight: 800; line-height: 1; color: #1d1d1d; } .ds-seen-name { font-size: 1.125rem; font-weight: 700; } .ds-seen-limb { grid-column: 2; font-size: .875rem; color: #626262; } .ds-seen-done { grid-column: 3; grid-row: 1 / 3; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #1d1d1d; color: #fff; }"
     },
@@ -94,9 +94,9 @@
       "name": "Progress Stripe",
       "kind": "custom",
       "refersTo": "colors.red",
-      "description": "Five segments that fill red as controls are seen; all fill when the lesson is done.",
-      "html": "<ol class=\"ds-stripe\"><li class=\"on\"></li><li class=\"on\"></li><li></li><li></li><li></li></ol>",
-      "css": ".ds-stripe { list-style: none; margin: 0; padding: 0; width: 360px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; } .ds-stripe li { height: 8px; border-radius: 4px; background: #ebebeb; } .ds-stripe li.on { background: #cc0000; }"
+      "description": "One segment per topic of the open lesson (column count set by --n); segments fill red as topics are seen.",
+      "html": "<ol class=\"ds-stripe\" style=\"--n:8\"><li class=\"on\"></li><li class=\"on\"></li><li></li><li></li><li></li><li></li><li></li><li></li></ol>",
+      "css": ".ds-stripe { list-style: none; margin: 0; padding: 0; width: 360px; display: grid; grid-template-columns: repeat(var(--n, 5), 1fr); gap: 6px; } .ds-stripe li { height: 8px; border-radius: 4px; background: #ebebeb; } .ds-stripe li.on { background: #cc0000; }"
     },
     {
       "name": "Marker with Caption Bar",
@@ -110,8 +110,8 @@
       "name": "Model Block and Credit",
       "kind": "custom",
       "refersTo": "model-credit",
-      "description": "Bike name over the unofficial-project note and the CC BY 4.0 model credit with link, at the left of the bottom bar.",
-      "html": "<div class=\"ds-model\"><strong>Yamaha R1 2020</strong><span>Proyecto educativo no oficial · Modelo 3D «Yamaha R1» de ejsnowy, <a href=\"#\">CC BY 4.0</a></span></div>",
+      "description": "Bike name over the unofficial-project note and the CC BY 4.0 model credit with links, at the left of the bottom bar.",
+      "html": "<div class=\"ds-model\"><strong>Yamaha R1 2020</strong><span>Proyecto educativo no oficial · Modelo 3D <a href=\"#\">«Yamaha R1»</a> de ejsnowy, <a href=\"#\">CC BY 4.0</a></span></div>",
       "css": ".ds-model { display: grid; min-width: 0; font-family: 'Figtree Variable', system-ui, sans-serif; } .ds-model strong { font-size: 1.375rem; font-weight: 800; line-height: 1.1; color: #1d1d1d; } .ds-model span { font-size: .8125rem; color: #626262; } .ds-model a { color: #626262; text-underline-offset: 2px; } .ds-model a:hover { color: #cc0000; } .ds-model a:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; }"
     },
     {
@@ -119,46 +119,48 @@
       "kind": "custom",
       "refersTo": "display",
       "description": "Large title and subtitle laid over the 3D canvas, kept legible by a white glow.",
-      "html": "<div class=\"ds-title\"><h1>Conoce los mandos</h1><p>Una moto se conduce con cinco mandos: dos manos y dos pies.</p></div>",
+      "html": "<div class=\"ds-title\"><h1>Conoce la motocicleta</h1><p>Entiende lo que vas a manejar antes de poner el motor en marcha: sus tipos y sus partes.</p></div>",
       "css": ".ds-title { padding: 24px 32px; background: #eeeff0; font-family: 'Figtree Variable', system-ui, sans-serif; text-shadow: 0 0 .5rem #fff, 0 0 1.25rem rgb(255 255 255 / .95); color: #1d1d1d; } .ds-title h1 { margin: 0; font-size: 3rem; font-weight: 800; line-height: 1.02; letter-spacing: -.025em; max-width: 16em; text-wrap: balance; } .ds-title p { margin: 12px 0 0; max-width: 34rem; font-size: 1.0625rem; font-weight: 500; color: #626262; }"
     }
   ],
   "narrative": {
     "northStar": "The Product Sheet",
-    "overview": "The lesson reads as a motorbike product page: a white ground, one corporate red, grey cards that open into label-and-value spec rows, and a fixed bottom bar carrying the model name, its credit and the red action. The 3D bike sits in a light studio field rather than a dark viewer, so the page and the object share one daylight. The language (white, red, grey, Figtree, underlined headings, bottom bar) follows the structure and style of a commercial motorbike product page, but the product is an unofficial educational project and carries no third-party logo, wing mark, wordmark, photo, video, code or price (PRODUCT.md, Brand Commitments).\n\nThe lesson is informational only: three phases (intro, learn one control at a time, a done review where any card or bike marker can be revisited), no quiz, score or exam. Density is calm and tabular. Red is rationed to the places that mean \"this is where you are or what you do next\". Everything in the interface is white, grey and near-black ink; the bike is the only place with other colour, and that colour belongs to the downloaded model's own textures, not to the interface palette. Motion is camera travel between controls, the active control's gesture on the bike, one card reveal and the progress fill; nothing decorative.",
+    "overview": "The app reads as a motorbike product page: a white ground, one corporate red, grey cards that open into label-and-text spec rows, and a fixed bottom bar carrying the model name, its credit and the red action. The 3D bike sits in a light studio field rather than a dark viewer, so the page and the object share one daylight. The language (white, red, grey, Figtree, underlined headings, bottom bar) follows the structure and style of a commercial motorbike product page, but the product is an unofficial educational project and carries no third-party logo, wing mark, wordmark, photo, video, code or price (PRODUCT.md, Brand Commitments).\n\nThe content is a set of lessons held as data (currently \"Conoce la motocicleta\", 8 topics, and \"Mandos y postura\", 7 topics). Every lesson uses the same shell: three phases (intro, learn one topic at a time, a done review where any card or bike marker can be revisited), informational only, no quiz, score or exam. The shell must hold any number of topics and any number of rows per topic. Density is calm and tabular. Red is rationed to the places that mean \"this is where you are or what you do next\". The interface is white, grey and near-black ink; the bike is the only place with other colour, and that colour belongs to the downloaded model's own textures. Motion is camera travel between topics, the gesture of the five rider controls on the bike, one card reveal and the progress fill; nothing decorative.",
     "keyCharacteristics": [
       "White page, grey cards, one red accent (#CC0000), near-black ink.",
       "Figtree Variable throughout, heavy 800 for headings, 400 to 700 for reading.",
       "A single 8px radius; the parallelogram tab is the only angled form.",
-      "Spec rows (label above value, hairline between) for every control's sheet.",
+      "Spec rows (label above text, hairline between) for every topic's sheet, in any number.",
+      "Lesson switching lives in the top bar: one red tab for the open lesson, plain soft-ink buttons for the others.",
       "State is never colour alone: number, check, border, fill, scale.",
-      "The bike is a glTF model lit by code-made studio panels; the interface never recolours it except to tint the active control red."
+      "The bike is a glTF model lit by code-made studio panels; the interface never recolours it except to tint the active topic's model parts red."
     ],
     "rules": [
-      { "name": "The Red Means Here-or-Next Rule", "body": "Red marks the current place (tab, active card, active marker, filled progress) or the next action (primary button), plus the heading underline. It is not used for decoration or body emphasis.", "section": "colors" },
-      { "name": "The Highlight Stays in the Scene Rule", "body": "Bike Highlight tints only the active control's meshes in the canvas. Interface elements use Corporate Red; do not use the highlight value in CSS, and do not tint any other bike part.", "section": "colors" },
+      { "name": "The Red Means Here-or-Next Rule", "body": "Red marks the current place (open-lesson tab, active card, active marker, filled progress), the next action (primary button), the hover on a lesson button, plus the heading underline. It is not used for decoration or body emphasis.", "section": "colors" },
+      { "name": "The Highlight Stays in the Scene Rule", "body": "Bike Highlight tints only the active topic's model nodes in the canvas. Interface elements use Corporate Red; do not use the highlight value in CSS, and do not tint any other bike part.", "section": "colors" },
       { "name": "The Weight Does the Work Rule", "body": "Rank by weight and size inside Figtree; do not introduce a second family or letter-spaced uppercase labels.", "section": "typography" },
       { "name": "The Halo Keeps Text Legible Rule", "body": "Text that sits over the 3D canvas gets a white glow (text-shadow: 0 0 0.5rem #fff, 0 0 1.25rem rgb(255 255 255 / 0.95)), never a dark or offset shadow. Text outside the canvas needs none.", "section": "typography" },
       { "name": "The Flat Cards Rule", "body": "Cards and buttons carry no shadow; state is border and fill.", "section": "elevation" }
     ],
     "dos": [
       "Do keep the page white with card-grey (#f4f4f4) containers and ink (#1d1d1d) text.",
-      "Do spend red (#cc0000) only on the tab, heading bar, active state, progress fill, link hover and the primary button.",
+      "Do spend red (#cc0000) only on the open-lesson tab, lesson-button hover, heading bar, active state, progress fill, link hover and the primary button.",
       "Do use one 8px radius and Figtree Variable at weights 400 to 800.",
-      "Do present each control as label-and-value rows under a short 3.5rem by 4px red bar beneath the heading.",
+      "Do present each topic as label-and-text rows under a short 3.5rem by 4px red bar beneath the panel heading, with as many rows as the topic has.",
       "Do put part names on dark caption bars, and always pair state colour with a second cue (check, fill, scale, border).",
-      "Do keep the fixed bottom bar: bike name with credit line, five red segments, secondary then primary button.",
+      "Do keep the fixed bottom bar: bike name with credit line, one red segment per topic, secondary then primary button.",
       "Do keep the model credit with its licence link visible wherever the bottom bar shows the model block.",
       "Do put a white halo behind any text laid over the canvas.",
+      "Do add lessons as data in the same shell: one tab or button per lesson, one card, segment and optional marker per topic.",
       "Do light the bike with code-made studio panels on a light ground, and compute markers and camera views from the model.",
       "Do keep education informational: revisit by tapping a card or marker, never by testing."
     ],
     "donts": [
       "Don't copy any third-party brand's logo, wing mark, wordmark, photos, video, 360 viewer, code or prices, or imply an official site.",
       "Don't use a dark 3D viewer; the field stays a light studio.",
-      "Don't add a second accent colour to the interface chrome.",
-      "Don't recolour the bike beyond the active-control tint, or hardcode a bike palette; the model's textures own its colour.",
-      "Don't add decorative motion beyond camera travel, the active gesture, the card reveal and the progress fill.",
+      "Don't add a second accent colour to the interface chrome, or give inactive lesson buttons a fill or a red state at rest.",
+      "Don't recolour the bike beyond the active-topic tint, or hardcode a bike palette; the model's textures own its colour.",
+      "Don't add decorative motion beyond camera travel, the control gestures, the card reveal and the progress fill.",
       "Don't add eyebrow kickers, glyph icons or a second type family.",
       "Don't add quizzes, scores or graded feedback (user decision, 2026-11-12)."
     ]

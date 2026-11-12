@@ -4,19 +4,19 @@ import { ContactShadows, Environment, Lightformer, OrbitControls } from '@react-
 import * as THREE from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { Bike, type BikeLayout } from './Bike'
-import { CONTROLS, type ControlId, type Vec3 } from '../lesson/controls'
+import type { Item, Vec3 } from '../lesson/lessons'
 
 interface SceneProps {
-  activeId: ControlId | null
-  learned: ReadonlySet<ControlId>
+  /** Temas de la lección abierta: cada uno con pieza en la moto tiene su marcador numerado. */
+  items: Item[]
+  activeId: string | null
+  seen: ReadonlySet<string>
   /** Posiciones sacadas del modelo; hasta que carga no hay marcadores. */
   layout: BikeLayout | null
   onLayout: (layout: BikeLayout) => void
-  /** Marcadores numerados y resaltado del mando activo. */
-  showState: boolean
   view: { position: Vec3; target: Vec3 }
   reducedMotion: boolean
-  onPick: (id: ControlId) => void
+  onPick: (id: string) => void
 }
 
 /** Lleva la cámara al encuadre pedido y cede el mando en cuanto el usuario arrastra. */
@@ -76,17 +76,17 @@ function CameraRig({ view, reducedMotion }: Pick<SceneProps, 'view' | 'reducedMo
 }
 
 /** Proyecta el ancla de cada mando a la pantalla y coloca ahí su marcador numerado. */
-function MarkerProjector({ slots, layout }: { slots: React.RefObject<(HTMLDivElement | null)[]>; layout: BikeLayout | null }) {
+function MarkerProjector({ slots, layout, items }: { slots: React.RefObject<(HTMLDivElement | null)[]>; layout: BikeLayout | null; items: Item[] }) {
   const v = useMemo(() => new THREE.Vector3(), [])
   useFrame(({ camera, size }) => {
-    CONTROLS.forEach((c, i) => {
+    items.forEach((item, i) => {
       const el = slots.current[i]
       if (!el) return
-      if (!layout) {
+      const anchor = layout?.anchors[item.id]
+      if (!anchor) {
         el.style.visibility = 'hidden'
         return
       }
-      const anchor = layout.anchors[c.id]
       v.set(...anchor).project(camera)
       const x = (v.x * 0.5 + 0.5) * size.width
       const y = (-v.y * 0.5 + 0.5) * size.height
@@ -99,7 +99,7 @@ function MarkerProjector({ slots, layout }: { slots: React.RefObject<(HTMLDivEle
   return null
 }
 
-export function Scene({ activeId, learned, layout, onLayout, showState, view, reducedMotion, onPick }: SceneProps) {
+export function Scene({ items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
   const slots = useRef<(HTMLDivElement | null)[]>([])
   return (
     <>
@@ -125,19 +125,20 @@ export function Scene({ activeId, learned, layout, onLayout, showState, view, re
         </Environment>
 
         <Suspense fallback={null}>
-          <Bike activeId={activeId} showState={showState} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
+          <Bike activeId={activeId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
         </Suspense>
 
         <ContactShadows position={[0, 0, 0]} scale={5} blur={2.4} far={1.6} opacity={0.38} />
         <CameraRig view={view} reducedMotion={reducedMotion} />
-        <MarkerProjector slots={slots} layout={layout} />
+        <MarkerProjector slots={slots} layout={layout} items={items} />
       </Canvas>
-      <div className="markers" hidden={!showState}>
-        {CONTROLS.map((c, i) => {
-          const state = c.id === activeId ? 'active' : learned.has(c.id) ? 'learned' : 'pending'
+      <div className="markers">
+        {items.map((item, i) => {
+          if (!layout?.anchors[item.id]) return null
+          const state = item.id === activeId ? 'active' : seen.has(item.id) ? 'learned' : 'pending'
           return (
             <div
-              key={c.id}
+              key={item.id}
               className="markers__slot"
               ref={(el) => {
                 slots.current[i] = el
@@ -147,17 +148,16 @@ export function Scene({ activeId, learned, layout, onLayout, showState, view, re
                 type="button"
                 className="marker"
                 data-state={state}
-                aria-label={`${i + 1}. ${c.name}, ${c.limb.toLowerCase()}`}
+                aria-label={`${i + 1}. ${item.name}`}
                 aria-current={state === 'active' ? 'step' : undefined}
-                onClick={() => onPick(c.id)}
+                onClick={() => onPick(item.id)}
               >
                 {i + 1}
               </button>
-              {state === 'active' && <span className="marker__tag">{c.part}</span>}
+              {state === 'active' && <span className="marker__tag">{item.part ?? item.name}</span>}
             </div>
           )
         })}
-      </div>
-    </>
+      </div>    </>
   )
 }

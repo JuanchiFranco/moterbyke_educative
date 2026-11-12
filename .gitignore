@@ -11,3 +11,7 @@ dist
 .claude/agents/
 .claude/settings.local.json
 .impeccable/hook.cache.json
+
+# Guía aportada por el usuario: se queda en local (puede tener derechos de autor)
+guia/*
+!guia/LEEME.md

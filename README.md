@@ -1,7 +1,11 @@
-# Lección 1 · Conoce los mandos
+# Conoce la motocicleta
 
-Lección interactiva en 3D para principiantes: explica los cinco mandos de una moto manual (acelerador, freno delantero, embrague, palanca de cambios y freno trasero). Es una lección solo informativa, sin examen: se estudia cada mando sobre la moto 3D (qué hace, el gesto, una nota de seguridad y un dato de la moto) y al final hay un repaso.
+Curso interactivo en 3D para principiantes, solo informativo (sin examen). Cada tema se estudia sobre una moto 3D que resalta la pieza de la que se habla y, en los mandos, la mueve.
 
+- **Lección 1 · Conoce la motocicleta:** tipos de moto, chasis y suspensión, motor y transmisión, ruedas y llantas, frenos, dirección y manillar, cilindrada, potencia y peso, y tablero y testigos.
+- **Lección 2 · Mandos y postura:** acelerador, freno delantero, embrague, palanca de cambios, freno trasero, direccionales, pito y luces, y la postura de conducción.
+
+Los textos siguen la «Guía de estudio y práctica 2026» (capítulos 03 y 04). El resto de la guía (normativa, señales, conducción, mantenimiento) se irá añadiendo; sus capítulos de examen y simulacro no se implementan.
 Proyecto educativo, no oficial. No está afiliado a Honda ni a Yamaha. El diseño de la interfaz se inspira en la estructura y el estilo de una página de producto de moto; no usa logotipos, fotos, vídeo ni código de ninguna marca.
 
 ## Cómo ejecutarlo
