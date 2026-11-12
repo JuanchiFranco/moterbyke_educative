@@ -1,12 +1,14 @@
 import { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, Environment, Lightformer, OrbitControls } from '@react-three/drei'
+import { ContactShadows, Environment, Lightformer, OrbitControls, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { Bike, type BikeLayout } from './Bike'
 import type { Item, Vec3 } from '../lesson/lessons'
+import { DEFAULT_BIKE, type BikeSpec } from '../lesson/bikes'
 
 interface SceneProps {
+  bike: BikeSpec
   /** Temas de la lección abierta: cada uno con pieza en la moto tiene su marcador numerado. */
   items: Item[]
   activeId: string | null
@@ -99,7 +101,7 @@ function MarkerProjector({ slots, layout, items }: { slots: React.RefObject<(HTM
   return null
 }
 
-export function Scene({ items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
+export function Scene({ bike, items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
   const slots = useRef<(HTMLDivElement | null)[]>([])
   return (
     <>
@@ -108,6 +110,9 @@ export function Scene({ items, activeId, seen, layout, onLayout, view, reducedMo
         dpr={[1, 2]}
         camera={{ position: view.position, fov: 34, near: 0.1, far: 50 }}
         gl={{ antialias: true, alpha: true }}
+        onCreated={({ gl }) => {
+          gl.localClippingEnabled = true
+        }}
         aria-label="Moto en 3D. Arrastra para girarla y toca un mando para estudiarlo."
         role="img"
       >
@@ -125,7 +130,7 @@ export function Scene({ items, activeId, seen, layout, onLayout, view, reducedMo
         </Environment>
 
         <Suspense fallback={null}>
-          <Bike activeId={activeId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
+          <Bike key={bike.id} bike={bike} activeId={activeId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
         </Suspense>
 
         <ContactShadows position={[0, 0, 0]} scale={5} blur={2.4} far={1.6} opacity={0.38} />
@@ -161,3 +166,6 @@ export function Scene({ items, activeId, seen, layout, onLayout, view, reducedMo
       </div>    </>
   )
 }
+
+// La moto de inicio se descarga mientras carga la página; las demás, al elegirlas.
+useGLTF.preload(DEFAULT_BIKE.url)

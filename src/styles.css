@@ -296,6 +296,47 @@ ul {
   scrollbar-width: thin;
 }
 
+/* Selector de moto: una fila con su etiqueta y la lista. */
+.picker {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.picker label {
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.picker select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+}
+
+.picker select:hover {
+  border-color: var(--ink);
+}
+
+.field__loading {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: var(--white);
+  border: 1px solid var(--line);
+  font-weight: 600;
+  color: var(--ink-soft);
+  pointer-events: none;
+}
 /* Título de sección con la barra roja corta debajo. */
 .panel h2 {
   position: relative;
@@ -626,6 +667,10 @@ ul {
 
   .panel {
     padding: 1rem;
+  }
+
+  .picker {
+    margin-bottom: 0.75rem;
   }
 
   .panel h2 {

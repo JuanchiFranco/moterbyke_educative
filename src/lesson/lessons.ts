@@ -17,13 +17,13 @@ export interface Item {
   where: string
   /** Filas de la ficha: etiqueta y texto. */
   sections: Section[]
-  /** Nodos del modelo 3D que se resaltan. Vacío: tema general, sin pieza que señalar. */
-  nodes: string[]
+  /** Fila extra que solo sale con una moto concreta (por id), con un dato de esa moto. */
+  facts?: Record<string, Section>
   /** Desde dónde se mira la pieza, relativo a su centro (x: delante, y: arriba, z: derecha), en metros. */
   view: Vec3
   /** Nombre de la pieza en la etiqueta sobre la moto; si falta, se usa el del tema. */
   part?: string
-  /** Es un mando que se mueve: gesto animado y clic directo sobre la moto. */
+  /** Es un mando que se mueve: gesto animado y clic directo sobre la moto (solo en motos que traen la pieza separada). */
   gesture?: Gesture
 }
 
@@ -34,17 +34,6 @@ export interface Lesson {
   title: string
   intro: string
   items: Item[]
-}
-
-/** Moto del modelo 3D: Yamaha R1 2020, de ejsnowy (CC BY 4.0). */
-export const BIKE_NAME = 'Yamaha R1 2020'
-export const MODEL_URL = '/models/yamaha_r1.glb'
-export const MODEL_CREDIT = {
-  title: 'Yamaha R1',
-  author: 'ejsnowy',
-  url: 'https://sketchfab.com/3d-models/yamaha-r1-7b3343ad0c0f4cbe94238c734e1b731a',
-  license: 'CC BY 4.0',
-  licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
 }
 
 /** Fuente de los textos de las lecciones. */
@@ -63,7 +52,6 @@ const LESSON_MOTO: Lesson = {
       name: 'Tipos de moto',
       tag: 'Cinco familias',
       where: 'Cada tipo pide precauciones distintas',
-      nodes: [],
       view: [0, 0, 0],
       sections: [
         { label: 'Urbana / commuter', text: 'Ligera y económica; ideal para dominar técnicas básicas, pero sigue siendo vulnerable al viento y al piso mojado.' },
@@ -71,8 +59,14 @@ const LESSON_MOTO: Lesson = {
         { label: 'Semiautomática', text: 'Cambios de marcha sin embrague manual convencional; consulta el patrón y el funcionamiento.' },
         { label: 'Naked / sport / touring / trail', text: 'Varían la geometría, la altura, la potencia, el peso y la posición: familiarízate antes de circular.' },
         { label: 'Eléctrica', text: 'Entrega el par rápidamente, puede ser silenciosa y requiere precauciones específicas con la batería de alta tensión.' },
-        { label: 'La del modelo 3D', text: 'La Yamaha R1 es una moto deportiva (sport).' },
       ],
+      facts: {
+        r1: { label: 'La del modelo 3D', text: 'La Yamaha R1 es una moto deportiva (sport).' },
+        vespa: { label: 'La del modelo 3D', text: 'Es una scooter Vespa clásica.' },
+        naked125: { label: 'La del modelo 3D', text: 'Es una naked de 125 cc.' },
+        fz16: { label: 'La del modelo 3D', text: 'Es una naked (Yamaha FZ 16).' },
+        ninja650: { label: 'La del modelo 3D', text: 'Es una moto deportiva (sport): la Kawasaki Ninja 650.' },
+      },
     },
     {
       id: 'chasis',
@@ -80,13 +74,14 @@ const LESSON_MOTO: Lesson = {
       tag: 'Estructura',
       where: 'Mantienen la moto en pie y las llantas en el suelo',
       part: 'Suspensión',
-      nodes: ['Yam_R1_Front_Fender_Forks_0', 'Yam_R1_Rear_Swingarm', 'Yam_R1_Shock_Strut', 'Yam_R1_Spring'],
       view: [0.6, 0.3, 1.7],
       sections: [
         { label: 'Qué hacen', text: 'Mantienen la estructura y ayudan al contacto de las llantas con el suelo.' },
         { label: 'Qué vigilar', text: 'Unos amortiguadores defectuosos alteran la estabilidad y la frenada.' },
-        { label: 'En el modelo', text: 'Se resaltan la horquilla delantera, el basculante y el amortiguador trasero con su muelle.' },
       ],
+      facts: {
+        r1: { label: 'En el modelo', text: 'Se resaltan la horquilla delantera, el basculante y el amortiguador trasero con su muelle.' },
+      },
     },
     {
       id: 'motor',
@@ -94,12 +89,13 @@ const LESSON_MOTO: Lesson = {
       tag: 'Fuerza',
       where: 'Generan la fuerza y la llevan a la rueda trasera',
       part: 'Motor',
-      nodes: ['Yam_R1_Frame_&_Engine', 'Yam_R1_Chain'],
       view: [0.5, 0.3, 1.3],
       sections: [
         { label: 'Qué hacen', text: 'Generan y transmiten la fuerza. Pueden usar cadena, correa o eje; muchos modelos usan embrague y caja de cambios.' },
-        { label: 'En la R1', text: 'Motor de 998 cc, cuatro cilindros en línea, con transmisión por cadena y caja de 6 velocidades.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Motor de 998 cc, cuatro cilindros en línea, con transmisión por cadena y caja de 6 velocidades.' },
+      },
     },
     {
       id: 'ruedas',
@@ -107,7 +103,6 @@ const LESSON_MOTO: Lesson = {
       tag: 'Contacto con el piso',
       where: 'Son el contacto real con el suelo',
       part: 'Ruedas',
-      nodes: ['Yam_R1_Front_Wheel', 'Yam_R1_Rear_Wheel'],
       view: [0.4, 0.3, 1.9],
       sections: [
         { label: 'Qué hacen', text: 'Son el contacto real con el suelo. El estado, el compuesto, la presión y el dibujo afectan la tracción.' },
@@ -121,19 +116,15 @@ const LESSON_MOTO: Lesson = {
       tag: 'Delantero y trasero',
       where: 'Delantero y trasero, de disco o de tambor',
       part: 'Frenos',
-      nodes: [
-        'Yam_R1_Front_Wheel_Brake_Discs_0',
-        'Yam_R1_Rear_Wheel_Brake_Discs_0',
-        'Yam_R1_Front_Brake_Actuator',
-        'Yam_R1_Rear_Brake_Actuator',
-      ],
       view: [0.4, 0.3, 1.9],
       sections: [
         { label: 'Qué son', text: 'Delantero y trasero; pueden ser de disco o de tambor. Algunos incorporan ABS (evita el bloqueo) o CBS (reparte la acción de frenado).' },
         { label: 'Qué revisar', text: 'La respuesta de la maneta y del pedal, el nivel y las fugas, los discos y las pastillas.' },
         { label: 'No salgas si', text: 'El freno está esponjoso, hay una fuga o falta eficacia.' },
-        { label: 'En la R1', text: 'Dos discos delanteros de 320 mm y uno trasero de 220 mm, con ABS.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Dos discos delanteros de 320 mm y uno trasero de 220 mm, con ABS.' },
+      },
     },
     {
       id: 'direccion',
@@ -141,7 +132,6 @@ const LESSON_MOTO: Lesson = {
       tag: 'Orientan la moto',
       where: 'La fuerza de giro cambia mucho con la velocidad',
       part: 'Manillar',
-      nodes: ['Yam_R1_Front_Forks_and_Handle_Bars'],
       view: [0.8, 0.3, 1.0],
       sections: [
         { label: 'Qué hacen', text: 'Orientan la moto. La fuerza de giro cambia mucho con la velocidad.' },
@@ -155,7 +145,6 @@ const LESSON_MOTO: Lesson = {
       name: 'Cilindrada, potencia y peso',
       tag: 'Qué significan',
       where: 'Los números de la ficha técnica',
-      nodes: [],
       view: [0, 0, 0],
       sections: [
         { label: 'Cilindrada (cm³)', text: 'Es el volumen desplazado por el motor térmico; no equivale directamente a potencia.' },
@@ -164,8 +153,12 @@ const LESSON_MOTO: Lesson = {
         { label: 'Peso y altura', text: 'El peso y la altura del asiento afectan la facilidad de control.' },
         { label: 'Para empezar', text: 'Prioriza una moto que puedas sostener y maniobrar con confianza, además de su estado técnico.' },
         { label: 'Licencias', text: 'La categoría A1 es para motos de hasta 125 cm³; la A2, para las de mayor cilindrada.' },
-        { label: 'En la R1', text: '998 cc, unos 199 CV y 203 kg con líquidos y gasolina, según su ficha pública.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: '998 cc, unos 199 CV y 203 kg con líquidos y gasolina, según su ficha pública.' },
+        naked125: { label: 'En esta moto', text: 'El nombre del modelo indica 125 cc, así que corresponde a la categoría A1.' },
+        ninja650: { label: 'En esta moto', text: 'El nombre del modelo indica 650 cc, así que corresponde a la categoría A2.' },
+      },
     },
     {
       id: 'tablero',
@@ -173,7 +166,6 @@ const LESSON_MOTO: Lesson = {
       tag: 'Avisos de la moto',
       where: 'Alertan de combustible, temperatura, aceite y ABS',
       part: 'Tablero',
-      nodes: ['Yam_R1_Front_End_&_Dash_Display_0', 'Yam_R1_Headlights'],
       view: [-0.7, 0.4, 0.55],
       sections: [
         { label: 'Para qué sirve', text: 'El tablero, las luces, la batería y los sensores alertan de combustible, temperatura, aceite, ABS y otros estados.' },
@@ -199,14 +191,15 @@ const LESSON_MANDOS: Lesson = {
       where: 'Puño derecho del manillar',
       part: 'Puño del acelerador',
       gesture: 'throttle',
-      nodes: ['Yam_R1_Throttle'],
       view: [-0.55, 0.4, 0.5],
       sections: [
         { label: 'Qué hace', text: 'Girar el puño hacia ti da gas: el motor empuja con más fuerza. Al soltarlo vuelve solo a cero.' },
         { label: 'El gesto', text: 'Gira la muñeca hacia ti, poco a poco.' },
         { label: 'Seguridad', text: 'Agarra con la muñeca baja y recta: así un bache no te hace dar gas sin querer.' },
-        { label: 'En la R1', text: 'Motor de 998 cc, cuatro cilindros en línea, con unos 199 CV según su ficha pública.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Motor de 998 cc, cuatro cilindros en línea, con unos 199 CV según su ficha pública.' },
+      },
     },
     {
       id: 'frontBrake',
@@ -215,14 +208,15 @@ const LESSON_MANDOS: Lesson = {
       where: 'Maneta derecha, delante del puño del acelerador',
       part: 'Maneta de freno',
       gesture: 'frontBrake',
-      nodes: ['Yam_R1_Front_Brake_Lever'],
       view: [-0.5, 0.4, 0.45],
       sections: [
         { label: 'Qué hace', text: 'Frena la rueda delantera, que es la que aporta la mayor parte de la frenada.' },
         { label: 'El gesto', text: 'Aprieta la maneta con los dedos, de forma progresiva.' },
         { label: 'Seguridad', text: 'Nunca de golpe: un apretón brusco puede bloquear la rueda delantera y hacerte caer.' },
-        { label: 'En la R1', text: 'Dos discos delanteros de 320 mm, con ABS.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Dos discos delanteros de 320 mm, con ABS.' },
+      },
     },
     {
       id: 'clutch',
@@ -231,14 +225,15 @@ const LESSON_MANDOS: Lesson = {
       where: 'Maneta izquierda del manillar',
       part: 'Maneta de embrague',
       gesture: 'clutch',
-      nodes: ['Yam_R1_Clutch_Lever'],
       view: [-0.55, 0.4, -0.5],
       sections: [
         { label: 'Qué hace', text: 'Acopla y desacopla el motor y la transmisión. Se usa para arrancar, parar y cambiar de marcha.' },
         { label: 'El gesto', text: 'Aprieta la maneta hasta el puño y suéltala despacio.' },
         { label: 'Seguridad', text: 'Suéltalo despacio al arrancar: si lo sueltas de golpe, la moto da un tirón o se cala.' },
-        { label: 'En la R1', text: 'Embrague multidisco en baño de aceite, con asistencia y antirrebote.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Embrague multidisco en baño de aceite, con asistencia y antirrebote.' },
+      },
     },
     {
       id: 'shift',
@@ -247,14 +242,15 @@ const LESSON_MANDOS: Lesson = {
       where: 'Delante del estribo izquierdo',
       part: 'Palanca de cambios',
       gesture: 'shift',
-      nodes: ['Yam_R1_Gear_Lever'],
       view: [0.6, 0.2, -0.95],
       sections: [
         { label: 'Qué hace', text: 'Selecciona las marchas. El patrón común es 1 – N – 2 – 3…: primera hacia abajo, punto muerto y las demás hacia arriba.' },
         { label: 'El gesto', text: 'Pisa con la puntera para bajar de marcha; levanta con el empeine para subir.' },
         { label: 'Seguridad', text: 'Cambia con el embrague apretado y sin mirar al pie: la vista sigue en la carretera.' },
-        { label: 'En la R1', text: 'Caja de 6 velocidades.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Caja de 6 velocidades.' },
+      },
     },
     {
       id: 'rearBrake',
@@ -263,14 +259,15 @@ const LESSON_MANDOS: Lesson = {
       where: 'Pedal delante del estribo derecho',
       part: 'Pedal de freno',
       gesture: 'rearBrake',
-      nodes: ['Yam_R1_Brake_Lever'],
       view: [0.6, 0.2, 0.95],
       sections: [
         { label: 'Qué hace', text: 'Complementa la frenada y estabiliza la moto a baja velocidad.' },
         { label: 'El gesto', text: 'Pisa el pedal con la puntera del pie derecho.' },
         { label: 'Seguridad', text: 'Úsalo junto con el delantero: él solo alarga mucho la distancia de frenado.' },
-        { label: 'En la R1', text: 'Disco trasero de 220 mm, con ABS.' },
       ],
+      facts: {
+        r1: { label: 'En la R1', text: 'Disco trasero de 220 mm, con ABS.' },
+      },
     },
     {
       id: 'luces',
@@ -278,7 +275,6 @@ const LESSON_MANDOS: Lesson = {
       tag: 'Mando izquierdo',
       where: 'Los interruptores del puño izquierdo',
       part: 'Interruptores',
-      nodes: ['Yam_R1_Indicator_Switch', 'Yam_R1_Horn_Switch', 'Yam_R1_Lights_Switches', 'Yam_R1_Highbeam_Flasher'],
       view: [-0.5, 0.4, -0.55],
       sections: [
         { label: 'Qué hacen', text: 'Comunican las maniobras y alertan cuando corresponde.' },
@@ -292,7 +288,6 @@ const LESSON_MANDOS: Lesson = {
       tag: 'Cómo sentarte',
       where: 'La mirada conduce la trayectoria',
       part: 'Asiento y estriberas',
-      nodes: ['Yam_R1_Body_Seats_0', 'Yam_R1_Left_Rider_Footpeg', 'Yam_R1_Right_Rider_Footpeg'],
       view: [0.3, 0.5, 1.8],
       sections: [
         { label: 'Cabeza y mirada', text: 'Cabeza erguida, mirada lejos y hacia la ruta que deseas seguir; evita fijarte en el obstáculo.' },

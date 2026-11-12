@@ -1,6 +1,6 @@
 ---
 name: Guía de estudio y práctica 2026 · Lecciones de moto
-description: A white product-sheet lesson series in one corporate red, grey cards and Figtree, wrapped around a light-studio glTF motorbike whose own textures carry all of its colour.
+description: A white product-sheet lesson series in one corporate red, grey cards and Figtree, wrapped around a choice of five light-studio glTF motorbikes whose own textures carry all of their colour.
 colors:
   red: "#cc0000"
   red-deep: "#a80000"
@@ -93,6 +93,17 @@ components:
     padding: "0 20px"
   link-lesson-hover:
     textColor: "{colors.red}"
+  bike-picker:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "8px 12px"
+    height: "44px"
+  loading-pill:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink-soft}"
+    rounded: "{rounded.md}"
+    padding: "8px 16px"
   caption-bar:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.white}"
@@ -110,7 +121,9 @@ components:
 
 **Creative North Star: "The Product Sheet"**
 
-The app reads as a motorbike product page: a white ground, one corporate red, grey cards that open into label-and-text spec rows, and a fixed bottom bar carrying the model name, its credit and the red action. The 3D bike sits in a light studio field rather than a dark viewer, so the page and the object share one daylight. The language (white, red, grey, Figtree, underlined headings, bottom bar) follows the structure and style of a commercial motorbike product page, but the product is an unofficial educational project and carries no third-party logo, wing mark, wordmark, photo, video, code or price (PRODUCT.md, Brand Commitments).
+The app reads as a motorbike product page: a white ground, one corporate red, grey cards that open into label-and-text spec rows, and a bike selector at the head of the panel, and a fixed bottom bar carrying the chosen bike's name, its credit and the red action. The 3D bike sits in a light studio field rather than a dark viewer, so the page and the object share one daylight. The language (white, red, grey, Figtree, underlined headings, bottom bar) follows the structure and style of a commercial motorbike product page, but the product is an unofficial educational project and carries no third-party logo, wing mark, wordmark, photo, video, code or price (PRODUCT.md, Brand Commitments).
+
+The visitor picks one of five bikes (Yamaha R1 2020 by default, a classic Vespa, a 125 cc naked, a Yamaha FZ 16, a Kawasaki Ninja 650) from a native list; the choice is mirrored in the URL as `?moto=id` and every lesson works on any of them. Only the R1 has separable controls that animate; on the others the controls topics carry an 'Ojo' notice row.
 
 The content is a set of lessons held as data (currently "Conoce la motocicleta", 8 topics, and "Mandos y postura", 7 topics). Every lesson uses the same shell: three phases (intro, learn one topic at a time, a done review where any card or bike marker can be revisited), informational only, no quiz, score or exam. The shell must hold any number of topics and any number of rows per topic. Density is calm and tabular. Red is rationed to the places that mean "this is where you are or what you do next". The interface is white, grey and near-black ink; the bike is the only place with other colour, and that colour belongs to the downloaded model's own textures. Motion is camera travel between topics, the gesture of the five rider controls on the bike, one card reveal and the progress fill; nothing decorative.
 
@@ -121,6 +134,7 @@ The content is a set of lessons held as data (currently "Conoce la motocicleta",
 - Spec rows (label above text, hairline between) for every topic's sheet, in any number.
 - Lesson switching lives in the top bar: one red tab for the open lesson, plain soft-ink buttons for the others.
 - State is never colour alone: number, check, border, fill, scale.
+- Bike choice is one plain native select at the top of the panel, styled like the rest (hairline border, 8px radius), never a gallery or carousel.
 - The bike is a glTF model lit by code-made studio panels; the interface never recolours it except to tint the active topic's model parts red.
 
 ## Colors
@@ -133,12 +147,12 @@ A white-and-grey ground with one corporate red and near-black ink; the red appea
 - **Bike Highlight** (`{colors.bike-highlight}`): not an interface colour. It is the tint applied in the 3D scene (with emissive intensity 0.7) to the active topic's model nodes so they read as red under studio light. It is a brighter, more saturated sibling of Corporate Red and does not match it; see the Highlight Stays in the Scene Rule.
 
 ### Neutral
-- **Ink** (`{colors.ink}`): body and heading text, seen markers and check badges, seen card numbers, focus ring, dark caption bars (at 92% opacity), secondary button border, marker border at rest.
-- **Soft Ink** (`{colors.ink-soft}`): inactive lesson buttons, secondary lines, status text, hints, disabled labels, pending card numbers, the model credit and its links, the subtitle.
-- **White** (`{colors.white}`): page, top bar, panel, bottom bar, active card, markers at rest, the field hint chip, and the halo behind the title.
+- **Ink** (`{colors.ink}`): body and heading text, seen markers and check badges, seen card numbers, focus ring, dark caption bars (at 92% opacity), secondary button border, marker border at rest, bike-picker text and its hover border.
+- **Soft Ink** (`{colors.ink-soft}`): inactive lesson buttons, secondary lines, status text, hints, disabled labels, pending card numbers, the model credit and its links, the subtitle, the loading pill text.
+- **White** (`{colors.white}`): page, top bar, panel, bottom bar, active card, markers at rest, the field hint chip, the loading pill, the bike-picker field, and the halo behind the title.
 - **Card Grey** (`{colors.card-grey}`): topic cards at rest, hover fill of the secondary button.
 - **Track Grey** (`{colors.track-grey}`): unfilled progress segments.
-- **Hairlines** (`{colors.hairline}`, `{colors.hairline-strong}`): panel edge, spec-row dividers, hint chip border, card hover border, scrollbar, disabled button border.
+- **Hairlines** (`{colors.hairline}`, `{colors.hairline-strong}`): panel edge, spec-row dividers, hint chip border, card hover border, scrollbar, disabled button border, bike-picker border, loading pill border.
 - **Studio Ground** (`{colors.studio-top}` to `{colors.studio-bottom}`): the radial gradient behind the 3D canvas, brightest low-centre. `{colors.studio-scene}` is the background of the code-made lighting environment, not a page surface.
 
 ### Named Rules
@@ -158,7 +172,7 @@ A white-and-grey ground with one corporate red and near-black ink; the red appea
 - **Headline** (800, 1.375rem, 1.1): panel heading with its red bar ("Temas", "Repaso" when done); also the bike name in the bottom bar. Compact panel heading: 1.125rem.
 - **Title** (700, 1.125rem): lesson title in the top bar, topic name on a card, card number (800, 1.5rem).
 - **Body** (400 to 500, 1rem, 1.45): spec-row text; subtitle (500, 1.0625rem, soft ink, max 34rem).
-- **Label** (800, 0.875rem): spec-row labels; tag line and hint at 0.875rem regular in soft ink; caption bars 700 at 0.9375rem; button text 600 at 1rem; lesson tab 700 and lesson buttons 600 at 1rem; top-bar status 0.9375rem tabular figures.
+- **Label** (800, 0.875rem): spec-row labels and the 'Moto' picker label (the picker value is 600 at 1rem); tag line and hint at 0.875rem regular in soft ink; caption bars 700 at 0.9375rem; button text 600 at 1rem; lesson tab 700 and lesson buttons 600 at 1rem; top-bar status 0.9375rem tabular figures.
 - **Credit** (400, 0.8125rem, soft ink): the unofficial-project and model credit line under the bike name, links underlined (offset 2px).
 
 ### Named Rules
@@ -168,11 +182,11 @@ A white-and-grey ground with one corporate red and near-black ink; the red appea
 
 ## Layout
 
-A four-area grid: top bar (3.75rem), 3D field (flexible), topic panel (25rem, i.e. 400px, right), fixed bottom bar (5.25rem). The page is exactly one viewport tall (100dvh); the panel scrolls internally and the active card is scrolled into view, so lists of 7 or 8 cards and sheets of any row count fit. Spacing is a loose rem rhythm: 0.375 to 0.75rem inside components, 1 to 1.5rem panel and card gutters, 2 to 2.5rem field and bar gutters. Cards stack with 0.625rem gaps. The title floats over the canvas at top-left (2rem from top, 2.5rem from the sides); camera views are computed from the model per topic, with a shared overview for intro and for topics without model nodes.
+A four-area grid: top bar (3.75rem), 3D field (flexible), topic panel (25rem, i.e. 400px, right), fixed bottom bar (5.25rem). The page is exactly one viewport tall (100dvh); the panel scrolls internally and the active card is scrolled into view, so lists of 7 or 8 cards and sheets of any row count fit. Spacing is a loose rem rhythm: 0.375 to 0.75rem inside components, 1 to 1.5rem panel and card gutters, 2 to 2.5rem field and bar gutters. Cards stack with 0.625rem gaps. The panel opens with the bike picker (label above a full-width list, 1.25rem below it; 0.75rem on compact), then the heading and cards. The title floats over the canvas at top-left (2rem from top, 2.5rem from the sides); camera views are computed from the model per topic, with a shared overview for intro and for topics without model nodes.
 
 The top bar groups the lesson buttons at the left (tab and links flush to the bar edge), then the lesson title, then the status pushed right.
 
-Below 60rem the grid becomes a single column: bar (3.25rem), field (13 to 15rem minimum, 36 to 40dvh), panel, bottom bar. The title leaves the 3D field and sits above the canvas; the field hint and the bar's lesson title are hidden (lesson buttons stay), and the bottom bar's model block keeps only its credit line (the CC BY attribution must stay visible), set small and centred under the buttons; the progress stripe moves to its own full-width row above the two buttons; inactive cards collapse to a single row.
+Below 60rem the grid becomes a single column: bar (3.25rem), field (13 to 15rem minimum, 36 to 40dvh), panel, bottom bar. The title leaves the 3D field and sits above the canvas; the field hint and the bar's lesson title are hidden (lesson buttons stay), and the bottom bar's model block keeps only its credit line (the CC BY attribution of the chosen bike must stay visible), set small and centred under the buttons; the progress stripe moves to its own full-width row above the two buttons; inactive cards collapse to a single row.
 
 ## Elevation & Depth
 
@@ -202,14 +216,20 @@ Gently rounded and plain: one 8px radius (0.5rem) for cards, buttons and the hin
 ### Cards / Containers
 - **Topic card:** 8px radius, 2px card-grey border and fill; hover darkens the border to hairline-strong. Header grid: number, topic name with its tag line beneath, and a 1.5rem ink check badge (sr-only label "Visto") once seen.
 - **Active card:** white fill, red border, red number, expands into the spec sheet. Clicking any card, or any bike marker, makes it active, in learn and in done.
-- **Spec sheet:** a definition list of label (800, 0.875rem) above text (1rem) rows, hairline between rows and on top, any number of rows; opens with a 0.45s clip reveal.
+- **Spec sheet:** a definition list of label (800, 0.875rem) above text (1rem) rows, hairline between rows and on top, any number of rows; opens with a 0.45s clip reveal. Rows are the topic's own, plus a bike-specific data row only for the bike it belongs to (e.g. 'En la R1'), plus, in topics that describe a rider control, an 'Ojo' row on bikes whose model cannot animate it, saying the controls may differ. Same row style as every other; no warning colour or icon.
 
 ### Navigation
 - **Top bar:** white, 1px red bottom border. Left: the lesson buttons ("Lección N"). The open one is the red parallelogram tab with white bold text; the others are plain soft-ink 600 buttons with 1.25rem side padding that turn red on hover (no fill, no underline). Then the bold lesson title, then right-aligned tabular status in soft ink (aria-live): "N temas", "Tema N de M", "Lección completada".
 - **Bottom bar:** white with lift shadow; model block at left, flexible progress, then the two buttons.
 
+### Bike Picker
+A native select under a 'Moto' label (800, 0.875rem), first in the panel. Full width, 44px minimum height, padding 8px 12px, 1px strong-hairline border, 8px radius, white fill, ink text at weight 600; options read 'Name · kind'. Hover turns the border ink; focus uses the global 3px ink outline. Native chrome is kept for the open list.
+
+### Loading Pill
+While a bike's model loads, a small white pill 'Cargando la moto…' (8px radius, 1px hairline border, soft ink, weight 600, padding 8px 16px) sits centred at 55% of the field height; markers are hidden until the layout exists. Same material as the field hint chip; no spinner, no motion.
+
 ### Model Block and Credit
-The bike name (Headline, 800, 1.375rem) sits above one soft-ink credit line (0.8125rem) that states the unofficial educational status and credits the 3D model with title, author and a CC BY 4.0 link. Links are soft ink, underlined with a 2px offset, and turn Corporate Red on hover. The credit is required by the model's licence and is part of the bar, not optional copy.
+The selected bike's name (Headline, 800, 1.375rem) sits above one soft-ink credit line (0.8125rem) that states the unofficial educational status and credits that bike's 3D model with its title link, author and licence link (CC BY 4.0). Links are soft ink, underlined with a 2px offset, and turn Corporate Red on hover. The credit changes with the bike and is required by each model's licence and is part of the bar, not optional copy.
 
 ### Progress Stripe
 One 8px-tall segment per topic of the open lesson (column count from the `--n` custom property, default 5) with 6px gaps on a track-grey base; each fills red left to right (0.7s) when its topic has been seen. Seen state is kept per lesson. Review state does not fill unseen segments.
@@ -218,7 +238,7 @@ One 8px-tall segment per topic of the open lesson (column count from the `--n` c
 Numbered 30px circles over the bike, shown for topics that have model nodes and anchored to the first node of each topic; topics without nodes have no marker. White with ink border at rest, ink fill once seen, red fill and 1.25 scale when active. Only the active marker shows a part name, on a dark caption bar (ink at 92%, white bold text, 6px radius) joined to the marker by a short ink rule.
 
 ### 3D Field
-A light studio: the radial gradient behind a transparent canvas, a hemisphere light, two directional lights, and a code-only environment of four rectangular Lightformer panels (a top softbox, two side panels, a low white strip) on a #dfe0e2 background, plus a soft contact shadow. The bike is the downloaded Yamaha R1 glTF, oriented and scaled to its real length at load; all of its colour comes from its textures. Any topic's named model nodes are tinted Bike Highlight with emissive glow while that topic is active; only the five rider controls (throttle, front brake, clutch, shift lever, rear brake) also perform a gesture on a pivot. Seen and pending topics keep the model's own colour in the canvas. In intro and done nothing is tinted.
+A light studio: the radial gradient behind a transparent canvas, a hemisphere light, two directional lights, and a code-only environment of four rectangular Lightformer panels (a top softbox, two side panels, a low white strip) on a #dfe0e2 background, plus a soft contact shadow. Each bike is a downloaded glTF with its own spec in code: orientation by two named wheels, by longest axis (optionally flipped), or by geometry for a photogrammetry scan cropped with clipping planes; scale to a real length; stray ground or studio-box parts hidden; and which nodes or materials ('mat:Name') each topic highlights (a bike with none shows the full bike and no markers). All colour comes from the textures. The active topic's named model nodes are tinted Bike Highlight with emissive glow while that topic is active; on the Yamaha R1 only, the five rider controls (throttle, front brake, clutch, shift lever, rear brake) also perform a gesture on a pivot. Seen and pending topics keep the model's own colour in the canvas. In intro and done nothing is tinted.
 
 ## Do's and Don'ts
 
@@ -229,7 +249,9 @@ A light studio: the radial gradient behind a transparent canvas, a hemisphere li
 - **Do** present each topic as label-and-text rows under a short 3.5rem by 4px red bar beneath the panel heading, with as many rows as the topic has.
 - **Do** put part names on dark caption bars, and always pair state colour with a second cue (check, fill, scale, border).
 - **Do** keep the fixed bottom bar: bike name with credit line, one red segment per topic, secondary then primary button.
-- **Do** keep the model credit with its licence link visible wherever the bottom bar shows the model block.
+- **Do** keep the chosen bike's credit with its licence link visible wherever the bottom bar shows the model block.
+- **Do** keep the bike choice a single native select at the top of the panel, mirrored in `?moto=id`, and hide markers while a model loads.
+- **Do** say honestly, in a plain 'Ojo' spec row, when a bike's model cannot show a control.
 - **Do** put a white halo behind any text laid over the canvas.
 - **Do** add lessons as data in the same shell: one tab or button per lesson, one card, segment and optional marker per topic.
 - **Do** light the bike with code-made studio panels on a light ground, and compute markers and camera views from the model.

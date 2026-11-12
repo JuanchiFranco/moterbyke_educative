@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-12T23:00:00Z",
+  "generatedAt": "2026-11-12T23:59:00Z",
   "title": "Design System: Guía de estudio y práctica 2026 · Lecciones de moto",
   "extensions": {
     "colorMeta": {
@@ -107,10 +107,26 @@
       "css": ".ds-marker-wrap { position: relative; height: 40px; width: 220px; } .ds-marker { position: absolute; top: 5px; left: 0; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #cc0000; background: #cc0000; color: #fff; font: 700 .9375rem/1 'Figtree Variable', system-ui, sans-serif; box-shadow: 0 2px 8px rgb(0 0 0 / .18); } .ds-marker:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; } .ds-tag { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); padding: 5.6px 12px; border-radius: 6px; background: rgb(29 29 29 / .92); color: #fff; font: 700 .9375rem 'Figtree Variable', system-ui, sans-serif; white-space: nowrap; }"
     },
     {
+      "name": "Bike Picker",
+      "kind": "input",
+      "refersTo": "bike-picker",
+      "description": "Native select under a 'Moto' label at the top of the panel; options read Name · kind.",
+      "html": "<div class=\"ds-picker\"><label for=\"ds-bp\">Moto</label><select id=\"ds-bp\"><option>Yamaha R1 2020 · Superdeportiva</option><option>Vespa clásica · Scooter</option></select></div>",
+      "css": ".ds-picker { display: grid; gap: 4px; width: 340px; font-family: 'Figtree Variable', system-ui, sans-serif; color: #1d1d1d; } .ds-picker label { font-size: .875rem; font-weight: 800; } .ds-picker select { width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid #bdbdbd; border-radius: 8px; background: #fff; color: #1d1d1d; font: inherit; font-weight: 600; } .ds-picker select:hover { border-color: #1d1d1d; } .ds-picker select:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; }"
+    },
+    {
+      "name": "Loading Pill",
+      "kind": "chip",
+      "refersTo": "loading-pill",
+      "description": "Small white pill over the 3D field while a bike's model loads; markers are hidden meanwhile.",
+      "html": "<p class=\"ds-loading\" role=\"status\">Cargando la moto…</p>",
+      "css": ".ds-loading { display: inline-block; margin: 0; padding: 8px 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; color: #626262; font: 600 1rem 'Figtree Variable', system-ui, sans-serif; }"
+    },
+    {
       "name": "Model Block and Credit",
       "kind": "custom",
       "refersTo": "model-credit",
-      "description": "Bike name over the unofficial-project note and the CC BY 4.0 model credit with links, at the left of the bottom bar.",
+      "description": "Selected bike's name over the unofficial-project note and its CC BY credit (model title link, author, licence link), at the left of the bottom bar.",
       "html": "<div class=\"ds-model\"><strong>Yamaha R1 2020</strong><span>Proyecto educativo no oficial · Modelo 3D <a href=\"#\">«Yamaha R1»</a> de ejsnowy, <a href=\"#\">CC BY 4.0</a></span></div>",
       "css": ".ds-model { display: grid; min-width: 0; font-family: 'Figtree Variable', system-ui, sans-serif; } .ds-model strong { font-size: 1.375rem; font-weight: 800; line-height: 1.1; color: #1d1d1d; } .ds-model span { font-size: .8125rem; color: #626262; } .ds-model a { color: #626262; text-underline-offset: 2px; } .ds-model a:hover { color: #cc0000; } .ds-model a:focus-visible { outline: 3px solid #1d1d1d; outline-offset: 3px; }"
     },
@@ -125,7 +141,7 @@
   ],
   "narrative": {
     "northStar": "The Product Sheet",
-    "overview": "The app reads as a motorbike product page: a white ground, one corporate red, grey cards that open into label-and-text spec rows, and a fixed bottom bar carrying the model name, its credit and the red action. The 3D bike sits in a light studio field rather than a dark viewer, so the page and the object share one daylight. The language (white, red, grey, Figtree, underlined headings, bottom bar) follows the structure and style of a commercial motorbike product page, but the product is an unofficial educational project and carries no third-party logo, wing mark, wordmark, photo, video, code or price (PRODUCT.md, Brand Commitments).\n\nThe content is a set of lessons held as data (currently \"Conoce la motocicleta\", 8 topics, and \"Mandos y postura\", 7 topics). Every lesson uses the same shell: three phases (intro, learn one topic at a time, a done review where any card or bike marker can be revisited), informational only, no quiz, score or exam. The shell must hold any number of topics and any number of rows per topic. Density is calm and tabular. Red is rationed to the places that mean \"this is where you are or what you do next\". The interface is white, grey and near-black ink; the bike is the only place with other colour, and that colour belongs to the downloaded model's own textures. Motion is camera travel between topics, the gesture of the five rider controls on the bike, one card reveal and the progress fill; nothing decorative.",
+    "overview": "The app reads as a motorbike product page: a white ground, one corporate red, grey cards that open into label-and-text spec rows, a bike selector at the head of the panel, and a fixed bottom bar carrying the chosen bike's name, its credit and the red action. The 3D bike sits in a light studio field rather than a dark viewer, so the page and the object share one daylight. The language (white, red, grey, Figtree, underlined headings, bottom bar) follows the structure and style of a commercial motorbike product page, but the product is an unofficial educational project and carries no third-party logo, wing mark, wordmark, photo, video, code or price (PRODUCT.md, Brand Commitments).\n\nThe visitor picks one of five bikes (Yamaha R1 2020 by default, a classic Vespa, a 125 cc naked, a Yamaha FZ 16, a Kawasaki Ninja 650) from a native list; the choice is mirrored in the URL as `?moto=id` and every lesson works on any of them. Only the R1 has separable controls that animate; on the others the controls topics carry an 'Ojo' notice row.\n\nThe content is a set of lessons held as data (currently \"Conoce la motocicleta\", 8 topics, and \"Mandos y postura\", 7 topics). Every lesson uses the same shell: three phases (intro, learn one topic at a time, a done review where any card or bike marker can be revisited), informational only, no quiz, score or exam. The shell must hold any number of topics and any number of rows per topic. Density is calm and tabular. Red is rationed to the places that mean \"this is where you are or what you do next\". The interface is white, grey and near-black ink; the bike is the only place with other colour, and that colour belongs to the downloaded model's own textures. Motion is camera travel between topics, the gesture of the five rider controls on the bike, one card reveal and the progress fill; nothing decorative.",
     "keyCharacteristics": [
       "White page, grey cards, one red accent (#CC0000), near-black ink.",
       "Figtree Variable throughout, heavy 800 for headings, 400 to 700 for reading.",
@@ -133,6 +149,7 @@
       "Spec rows (label above text, hairline between) for every topic's sheet, in any number.",
       "Lesson switching lives in the top bar: one red tab for the open lesson, plain soft-ink buttons for the others.",
       "State is never colour alone: number, check, border, fill, scale.",
+      "Bike choice is one plain native select at the top of the panel, styled like the rest (hairline border, 8px radius), never a gallery or carousel.",
       "The bike is a glTF model lit by code-made studio panels; the interface never recolours it except to tint the active topic's model parts red."
     ],
     "rules": [
@@ -149,7 +166,9 @@
       "Do present each topic as label-and-text rows under a short 3.5rem by 4px red bar beneath the panel heading, with as many rows as the topic has.",
       "Do put part names on dark caption bars, and always pair state colour with a second cue (check, fill, scale, border).",
       "Do keep the fixed bottom bar: bike name with credit line, one red segment per topic, secondary then primary button.",
-      "Do keep the model credit with its licence link visible wherever the bottom bar shows the model block.",
+      "Do keep the chosen bike's credit with its licence link visible wherever the bottom bar shows the model block.",
+      "Do keep the bike choice a single native select at the top of the panel, mirrored in `?moto=id`, and hide markers while a model loads.",
+      "Do say honestly, in a plain 'Ojo' spec row, when a bike's model cannot show a control.",
       "Do put a white halo behind any text laid over the canvas.",
       "Do add lessons as data in the same shell: one tab or button per lesson, one card, segment and optional marker per topic.",
       "Do light the bike with code-made studio panels on a light ground, and compute markers and camera views from the model.",

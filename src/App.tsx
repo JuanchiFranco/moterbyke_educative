@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Scene } from './scene/Scene'
 import type { BikeLayout } from './scene/Bike'
-import { BIKE_NAME, LESSONS, MODEL_CREDIT, type Vec3 } from './lesson/lessons'
+import { LESSONS, type Section, type Vec3 } from './lesson/lessons'
+import { BIKES, DEFAULT_BIKE } from './lesson/bikes'
 
 type Phase = 'intro' | 'learn' | 'done'
 
@@ -37,6 +38,8 @@ export function App() {
   /** Temas vistos, por lección. */
   const [seenBy, setSeenBy] = useState<Record<string, ReadonlySet<string>>>({})
   const [layout, setLayout] = useState<BikeLayout | null>(null)
+  // La moto puede venir en la dirección (?moto=vespa): sirve para compartir un enlace directo.
+  const [bike, setBike] = useState(() => BIKES.find((b) => b.id === new URLSearchParams(window.location.search).get('moto')) ?? DEFAULT_BIKE)
 
   const lesson = LESSONS[lessonIndex]
   const items = lesson.items
@@ -50,6 +53,32 @@ export function App() {
   useEffect(() => {
     activeCard.current?.scrollIntoView({ block: compact ? 'start' : 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' })
   }, [index, phase, lessonIndex, reducedMotion, compact])
+
+  // Al cambiar de moto el modelo nuevo calcula su propia distribución: hasta entonces no hay marcadores.
+  const chooseBike = (id: string) => {
+    const next = BIKES.find((b) => b.id === id)
+    if (!next || next.id === bike.id) return
+    setLayout(null)
+    setBike(next)
+    const url = new URL(window.location.href)
+    if (next.id === DEFAULT_BIKE.id) url.searchParams.delete('moto')
+    else url.searchParams.set('moto', next.id)
+    window.history.replaceState(null, '', url)
+  }
+
+  /** La ficha de un tema: sus filas, el dato de la moto elegida y, en los mandos, el aviso si esta moto no los mueve. */
+  const sectionsOf = (item: (typeof items)[number]): Section[] => {
+    const rows = [...item.sections]
+    const fact = item.facts?.[bike.id]
+    if (fact) rows.push(fact)
+    if (item.gesture && !bike.gestures) {
+      rows.push({
+        label: 'Ojo',
+        text: `Este tema describe una moto manual como la Yamaha R1. En la ${bike.name} los mandos pueden estar en otro sitio o ser otros: revisa siempre el manual de tu moto.`,
+      })
+    }
+    return rows
+  }
 
   const markSeen = (id: string) => setSeenBy((s) => ({ ...s, [lesson.id]: new Set(s[lesson.id] ?? []).add(id) }))
 
@@ -129,6 +158,7 @@ export function App() {
       <main className="field">
         <div className="field__canvas">
           <Scene
+            bike={bike}
             items={items}
             activeId={active?.id ?? null}
             seen={seen}
@@ -143,10 +173,22 @@ export function App() {
           <h1>{title}</h1>
           <p>{subtitle}</p>
         </div>
+        {!layout && <p className="field__loading" role="status">Cargando la moto…</p>}
         <p className="field__hint">Arrastra para girar la moto. Rueda o pellizca para acercarte.</p>
       </main>
 
       <aside className="panel" aria-label={`Temas: ${lesson.title}`}>
+        <div className="picker">
+          <label htmlFor="bike-picker">Moto</label>
+          <select id="bike-picker" value={bike.id} onChange={(e) => chooseBike(e.target.value)}>
+            {BIKES.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name} · {b.kind}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <h2>{phase === 'done' ? 'Repaso' : 'Temas'}</h2>
         <ol className="cards">
           {items.map((item, i) => {
@@ -166,7 +208,7 @@ export function App() {
                 </button>
                 {state === 'active' && (
                   <dl className="card__body">
-                    {item.sections.map((s) => (
+                    {sectionsOf(item).map((s) => (
                       <div key={s.label} className="card__row">
                         <dt>{s.label}</dt>
                         <dd>{s.text}</dd>
@@ -182,11 +224,11 @@ export function App() {
 
       <footer className="foot">
         <div className="foot__model">
-          <strong>{BIKE_NAME}</strong>
+          <strong>{bike.name}</strong>
           <span>
             Proyecto educativo no oficial · Modelo 3D{' '}
-            <a href={MODEL_CREDIT.url} target="_blank" rel="noreferrer">«{MODEL_CREDIT.title}»</a> de {MODEL_CREDIT.author},{' '}
-            <a href={MODEL_CREDIT.licenseUrl} target="_blank" rel="noreferrer">{MODEL_CREDIT.license}</a>
+            <a href={bike.credit.url} target="_blank" rel="noreferrer">«{bike.credit.title}»</a> de {bike.credit.author},{' '}
+            <a href={bike.credit.licenseUrl} target="_blank" rel="noreferrer">{bike.credit.license}</a>
           </span>
         </div>
         <ol className="stripe" style={{ '--n': items.length } as CSSProperties} aria-label={`Progreso: ${status}`}>
