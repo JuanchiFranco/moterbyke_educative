@@ -15,3 +15,7 @@ dist
 # Guía aportada por el usuario: se queda en local (puede tener derechos de autor)
 guia/*
 !guia/LEEME.md
+
+# Salida de las pruebas de Playwright
+test-results/
+playwright-report/

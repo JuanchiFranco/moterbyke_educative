@@ -284,7 +284,9 @@ export function Bike({ bike, pose, track = null, activeId, animate, onPick, onLa
     // En un escenario la moto actúa el tema: sigue su recorrido, frena, se inclina y las ruedas giran con ella.
     const g = ride.current
     if (!g || !pose) return
-    const step = Math.min(dt, 0.05)
+    // En desarrollo las pruebas pueden acelerar el reloj (window.__rideScale) para no esperar a la moto.
+    const scale = import.meta.env.DEV ? ((window as unknown as { __rideScale?: number }).__rideScale ?? 1) : 1
+    const step = Math.min(dt, 0.05) * scale
 
     if (!track) {
       // Sin recorrido propio: un trayecto sencillo en bucle por su carril.
@@ -334,6 +336,10 @@ export function Bike({ bike, pose, track = null, activeId, animate, onPick, onLa
     g.rotation.set(r.lean, here.heading, slope, 'YXZ')
     g.position.set(here.x, pose.position[1] + (slope ? here.x * Math.tan(slope) : 0), here.z)
     rolled.current += moved
+    // Solo en desarrollo: las pruebas de extremo a extremo leen de aquí por dónde va la moto.
+    if (import.meta.env.DEV) {
+      ;(window as unknown as Record<string, unknown>).__ride = { x: here.x, z: here.z, yaw: g.rotation.y, lean: r.lean, s: r.s, len: track.length, wait: r.wait, speed: here.speed, wheels: wheelSpin.length, spin: wheelSpin[0]?.group.rotation.toArray() }
+    }
     for (const w of wheelSpin) w.group.quaternion.setFromAxisAngle(w.axis, (rolled.current / w.radius) % (Math.PI * 2))
   })
 

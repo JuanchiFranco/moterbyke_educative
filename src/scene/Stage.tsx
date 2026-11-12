@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { ALL_ITEMS, type Vec3 } from '../lesson/lessons'
 import { SCENARIOS, type BikePose } from './scenarios'
+import { RIDES } from './rides'
 import type { View } from './Bike'
 
 /** Lo que el escenario cuenta a la aplicación: dónde van los marcadores, las cámaras y la moto. */
@@ -59,12 +60,16 @@ function build(id: string) {
       if (item.cam) views[item.id] = item.cam
       else {
         // Encuadre automático: mismo ángulo que la vista general, a una distancia que depende del tamaño de lo resaltado.
-        const s = all.getSize(new THREE.Vector3())
+        // El encuadre incluye también por dónde pasa la moto en este tema.
+        const framed = all.clone()
+        for (const [x, z] of RIDES[item.id]?.points ?? []) framed.expandByPoint(new THREE.Vector3(x, 0, z))
+        const s = framed.getSize(new THREE.Vector3())
+        const fc = framed.getCenter(new THREE.Vector3())
         const dir = new THREE.Vector3(...scenario.view.position).sub(new THREE.Vector3(...scenario.view.target)).normalize()
         const dist = THREE.MathUtils.clamp(s.length() * 1.7 + 5, 8, 48)
         views[item.id] = {
-          position: [c.x + dir.x * dist, Math.max(c.y + dir.y * dist, 1.2), c.z + dir.z * dist],
-          target: [c.x, c.y, c.z],
+          position: [fc.x + dir.x * dist, Math.max(c.y + dir.y * dist, 1.2), fc.z + dir.z * dist],
+          target: [fc.x, c.y, fc.z],
         }
       }
     } else if (item.cam) views[item.id] = item.cam

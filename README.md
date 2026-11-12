@@ -34,3 +34,12 @@ Modelos 3D de Sketchfab, todos con licencia [CC BY 4.0](https://creativecommons.
 - Tipografía: Figtree, vía `@fontsource-variable/figtree`.
 
 Los textos de la lección no han sido revisados por ningún instructor de conducción: son comprensión previa a la práctica real, no la sustituyen.
+
+## Pruebas
+
+```bash
+npx playwright install chromium-headless-shell   # una sola vez
+npm test
+```
+
+Playwright abre cada lección y tema, comprueba que no hay errores y que la moto cumple su recorrido en los 35 temas con escenario (llega al final, se detiene donde debe, no se sale de su trayectoria, las ruedas giran y con movimiento reducido no se mueve). Las capturas quedan en `test-results/escenas/`.
