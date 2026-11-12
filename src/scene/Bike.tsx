@@ -192,6 +192,26 @@ function build(source: THREE.Object3D, bike: BikeSpec) {
     }
   }
 
+  // Ruedas que giran al avanzar: cada una se cuelga de un pivote en su centro, con el eje transversal de la moto.
+  const wheelSpin: { group: THREE.Group; axis: THREE.Vector3; radius: number }[] = []
+  if (bike.wheels) {
+    holder.updateMatrixWorld(true)
+    const inv = holder.matrixWorld.clone().invert()
+    // Hacia delante (+x del mundo) la rueda gira en sentido -z; en el marco del modelo, el espejo ya está incluido.
+    const axis = new THREE.Vector3(0, 0, -1).transformDirection(inv)
+    for (const name of bike.wheels) {
+      const node = holder.getObjectByName(name)
+      const wb = boxOfNode(name)
+      if (!node || !wb) continue
+      const group = new THREE.Group()
+      group.position.copy(holder.worldToLocal(centerOf(wb)))
+      holder.add(group)
+      group.updateMatrixWorld(true)
+      group.attach(node)
+      wheelSpin.push({ group, axis: axis.clone(), radius: Math.max((wb.max.y - wb.min.y) / 2, 0.1) })
+    }
+  }
+
   const L = bike.length
   const c = centerOf(box)
   const layout: BikeLayout = {
@@ -200,13 +220,18 @@ function build(source: THREE.Object3D, bike: BikeSpec) {
     overview: { position: [c.x + 1.0 * L, c.y + 0.38 * L, c.z + 1.2 * L], target: [c.x, c.y + 0.12 * L, c.z] },
     compact: { position: [c.x + 0.8 * L, c.y + 0.2 * L, c.z + 1.05 * L], target: [c.x, c.y + 0.1 * L, c.z] },
   }
-  return { holder, pivots, hits, tints, tintsOf, layout }
+  return { holder, pivots, hits, tints, tintsOf, layout, wheelSpin }
 }
+
+/** Velocidad de la moto en los escenarios, en metros por segundo. */
+const RIDE_SPEED = 2.4
 
 export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikeProps) {
   const gltf = useGLTF(bike.url)
   const built = useMemo(() => build(gltf.scene, bike), [gltf.scene, bike])
-  const { holder, pivots, hits, tints, tintsOf, layout } = built
+  const { holder, pivots, hits, tints, tintsOf, layout, wheelSpin } = built
+  const ride = useRef<THREE.Group>(null)
+  const rolled = useRef(0)
 
   const layoutRef = useRef(onLayout)
   layoutRef.current = onLayout
@@ -251,6 +276,22 @@ export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikePr
       const to = id === activeId ? goal[p.gesture] : 0
       p.group.rotation[p.axis] += (to - p.group.rotation[p.axis]) * k
     }
+
+    // En un escenario la moto avanza en bucle por su carril y las ruedas giran con ella.
+    const g = ride.current
+    if (!g || !pose || !animate) {
+      if (g) g.position.x = g.position.y = g.position.z = 0
+      return
+    }
+    const travel = pose.travel ?? 6
+    if (travel > 0) {
+      rolled.current = (rolled.current + RIDE_SPEED * Math.min(dt, 0.05)) % travel
+      // Hacia donde mira: rotationY gira +x sobre el plano horizontal.
+      g.position.set(Math.cos(pose.rotationY) * rolled.current, 0, -Math.sin(pose.rotationY) * rolled.current)
+    } else {
+      rolled.current += RIDE_SPEED * Math.min(dt, 0.05)
+    }
+    for (const w of wheelSpin) w.group.quaternion.setFromAxisAngle(w.axis, (rolled.current / w.radius) % (Math.PI * 2))
   })
 
   const pick = (id: string) => ({
@@ -270,7 +311,9 @@ export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikePr
   const at = pose ?? { position: [0, 0, 0] as Vec3, rotationY: 0, pitch: 0 }
   return (
     <group position={at.position} rotation={[0, at.rotationY, at.pitch ?? 0]} visible={pose !== null}>
-      <primitive object={holder} />
+      <group ref={ride}>
+        <primitive object={holder} />
+      </group>
       {/* Zona de toque generosa en los mandos: las manetas y pedales reales son finos. */}
       {hits.map((h) => (
         <mesh key={h.id} position={h.center} {...pick(h.id)}>

@@ -37,7 +37,7 @@ export interface Item {
   /** En un escenario: encuadre propio, en coordenadas del escenario. Si falta, se mira el grupo desde `view`. */
   cam?: { position: Vec3; target: Vec3 }
   /** En un escenario: dónde queda la moto en este tema. */
-  bikePose?: { position: Vec3; rotationY: number; pitch?: number }
+  bikePose?: { position: Vec3; rotationY: number; pitch?: number; travel?: number }
   /** Con qué clave de la ficha de la moto se buscan las piezas (por defecto, el id del tema). */
   nodesKey?: string
 }

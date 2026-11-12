@@ -13,6 +13,8 @@ export interface BikePose {
   rotationY: number
   /** Inclinación hacia delante/atrás (subidas y bajadas). */
   pitch?: number
+  /** Metros que avanza en bucle hacia donde mira (por defecto 6; 0 la deja en su sitio con las ruedas girando). */
+  travel?: number
 }
 
 export interface Scenario {
@@ -553,7 +555,7 @@ export const SCENARIOS: Record<string, Builder> = {
     const apex = mk('apex', 0.55, 1.0, '#d8584a')
     const exit = mk('exit', 1.1, Math.PI / 2, '#4aa86a')
     group.add(sign('peligro', -8, 4.4, 0))
-    return { ...finish(group, { entry, apex, exit }), bike: { position: [-6, 0.06, OURS], rotationY: 0 }, view: { position: [-14, 12, 16], target: [4, 0, -4] } }
+    return { ...finish(group, { entry, apex, exit }), bike: { position: [-6, 0.06, OURS], rotationY: 0, travel: 5 }, view: { position: [-14, 12, 16], target: [4, 0, -4] } }
   },
 
   /** Subida: calzada inclinada. */
@@ -571,7 +573,7 @@ export const SCENARIOS: Record<string, Builder> = {
     up.add(upM)
     up.rotation.z = 0.14
     group.add(up)
-    return { ...finish(group, { uphill: up }), bike: { position: [0, 0.06, OURS], rotationY: 0, pitch: 0.14 }, view: { position: [6, 3.6, 9], target: [4, 1, 0.8] } }
+    return { ...finish(group, { uphill: up }), bike: { position: [0, 0.06, OURS], rotationY: 0, pitch: 0.14, travel: 0 }, view: { position: [6, 3.6, 9], target: [4, 1, 0.8] } }
   },
 
   /** Lluvia y charcos. */
