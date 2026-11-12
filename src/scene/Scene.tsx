@@ -6,6 +6,7 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { Bike, type BikeLayout } from './Bike'
 import { Stage, type StageLayout } from './Stage'
 import type { BikePose } from './scenarios'
+import type { Track } from './rides'
 import type { Item, Vec3 } from '../lesson/lessons'
 import { DEFAULT_BIKE, type BikeSpec } from '../lesson/bikes'
 
@@ -16,6 +17,8 @@ interface SceneProps {
   onStageLayout: (layout: StageLayout) => void
   /** Dónde queda la moto en el escenario (null: no sale). */
   bikePose?: BikePose | null
+  /** Recorrido que actúa la moto en el escenario, según el tema abierto. */
+  track?: Track | null
   /** Luz del escenario: 1 es el estudio claro, menos es de noche. */
   dim: number
   /** Tema abierto cuando es de la moto; null en los escenarios. */
@@ -112,7 +115,7 @@ function MarkerProjector({ slots, layout, items }: { slots: React.RefObject<(HTM
   return null
 }
 
-export function Scene({ bike, stageId, onStageLayout, bikePose, dim, bikeActiveId, items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
+export function Scene({ bike, stageId, onStageLayout, bikePose, track, dim, bikeActiveId, items, activeId, seen, layout, onLayout, view, reducedMotion, onPick }: SceneProps) {
   const slots = useRef<(HTMLDivElement | null)[]>([])
   return (
     <>
@@ -148,7 +151,7 @@ export function Scene({ bike, stageId, onStageLayout, bikePose, dim, bikeActiveI
         </Environment>
 
         <Suspense fallback={null}>
-          <Bike key={bike.id} bike={bike} pose={bikePose} activeId={bikeActiveId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
+          <Bike key={bike.id} bike={bike} pose={bikePose} track={track} activeId={bikeActiveId} animate={!reducedMotion} onPick={onPick} onLayout={onLayout} />
         </Suspense>
 
         {stageId !== 'bike' && <Stage key={stageId} id={stageId} activeId={activeId} onLayout={onStageLayout} />}

@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import { ALL_ITEMS, type Gesture, type Vec3 } from '../lesson/lessons'
 import type { BikeSpec } from '../lesson/bikes'
 import type { BikePose } from './scenarios'
+import type { Track } from './rides'
 
 export interface View {
   position: Vec3
@@ -24,6 +25,8 @@ interface BikeProps {
   bike: BikeSpec
   /** Dónde está la moto: null en un escenario que no la lleva. Sin pose, está en el centro. */
   pose?: BikePose | null
+  /** Recorrido que actúa la moto en el escenario (el del tema abierto). */
+  track?: Track | null
   /** Tema abierto: sus piezas se resaltan y, si es un mando, hace su gesto. */
   activeId: string | null
   animate: boolean
@@ -226,12 +229,13 @@ function build(source: THREE.Object3D, bike: BikeSpec) {
 /** Velocidad de la moto en los escenarios, en metros por segundo. */
 const RIDE_SPEED = 2.4
 
-export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikeProps) {
+export function Bike({ bike, pose, track = null, activeId, animate, onPick, onLayout }: BikeProps) {
   const gltf = useGLTF(bike.url)
   const built = useMemo(() => build(gltf.scene, bike), [gltf.scene, bike])
   const { holder, pivots, hits, tints, tintsOf, layout, wheelSpin } = built
   const ride = useRef<THREE.Group>(null)
   const rolled = useRef(0)
+  const run = useRef({ s: 0, wait: 0, lean: 0 })
 
   const layoutRef = useRef(onLayout)
   layoutRef.current = onLayout
@@ -277,22 +281,66 @@ export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikePr
       p.group.rotation[p.axis] += (to - p.group.rotation[p.axis]) * k
     }
 
-    // En un escenario la moto avanza en bucle por su carril y las ruedas giran con ella.
+    // En un escenario la moto actúa el tema: sigue su recorrido, frena, se inclina y las ruedas giran con ella.
     const g = ride.current
-    if (!g || !pose || !animate) {
-      if (g) g.position.x = g.position.y = g.position.z = 0
+    if (!g || !pose) return
+    const step = Math.min(dt, 0.05)
+
+    if (!track) {
+      // Sin recorrido propio: un trayecto sencillo en bucle por su carril.
+      g.rotation.set(0, 0, 0)
+      if (!animate) {
+        g.position.set(0, 0, 0)
+        return
+      }
+      const travel = pose.travel ?? 6
+      if (travel > 0) {
+        rolled.current = (rolled.current + RIDE_SPEED * step) % travel
+        g.position.set(Math.cos(pose.rotationY) * rolled.current, 0, -Math.sin(pose.rotationY) * rolled.current)
+      } else {
+        g.position.set(0, 0, 0)
+        rolled.current += RIDE_SPEED * step
+      }
+      for (const w of wheelSpin) w.group.quaternion.setFromAxisAngle(w.axis, (rolled.current / w.radius) % (Math.PI * 2))
       return
     }
-    const travel = pose.travel ?? 6
-    if (travel > 0) {
-      rolled.current = (rolled.current + RIDE_SPEED * Math.min(dt, 0.05)) % travel
-      // Hacia donde mira: rotationY gira +x sobre el plano horizontal.
-      g.position.set(Math.cos(pose.rotationY) * rolled.current, 0, -Math.sin(pose.rotationY) * rolled.current)
-    } else {
-      rolled.current += RIDE_SPEED * Math.min(dt, 0.05)
-    }
+
+    const r = run.current
+    let moved = 0
+    if (animate) {
+      if (r.wait > 0) {
+        r.wait -= step
+        if (r.wait <= 0 && r.s >= track.length - 1e-6) r.s = 0
+      } else {
+        const ds = track.at(r.s).speed * step
+        const next = r.s + ds
+        const stop = track.pauses.find((p) => p.s > r.s + 1e-6 && p.s <= next + 1e-6)
+        if (stop) {
+          moved = stop.s - r.s
+          r.s = stop.s
+          r.wait = stop.t
+        } else {
+          moved = ds
+          r.s = next
+        }
+      }
+    } else r.s = 0
+    const here = track.at(r.s)
+    // Inclinación hacia el lado de la curva: lo que pide la aceleración lateral a esa velocidad (algo exagerada para que se vea).
+    const moving = r.wait <= 0 && animate
+    const lean = moving ? -Math.atan((here.speed * here.speed * here.curvature) / 9.8) * 2.6 : 0
+    r.lean += (Math.max(-0.5, Math.min(0.5, lean)) - r.lean) * (1 - Math.exp(-6 * step))
+    const slope = pose.pitch ?? 0
+    g.rotation.set(r.lean, here.heading, slope, 'YXZ')
+    g.position.set(here.x, pose.position[1] + (slope ? here.x * Math.tan(slope) : 0), here.z)
+    rolled.current += moved
     for (const w of wheelSpin) w.group.quaternion.setFromAxisAngle(w.axis, (rolled.current / w.radius) % (Math.PI * 2))
   })
+
+  // Cada tema empieza su recorrido desde el principio.
+  useEffect(() => {
+    run.current = { s: 0, wait: 0, lean: 0 }
+  }, [track])
 
   const pick = (id: string) => ({
     onClick: (e: ThreeEvent<MouseEvent>) => {
@@ -308,7 +356,8 @@ export function Bike({ bike, pose, activeId, animate, onPick, onLayout }: BikePr
     },
   })
 
-  const at = pose ?? { position: [0, 0, 0] as Vec3, rotationY: 0, pitch: 0 }
+  // Con recorrido, la moto se coloca sola en el mundo: la pose solo aporta la altura y la inclinación.
+  const at = track ? { position: [0, 0, 0] as Vec3, rotationY: 0, pitch: 0 } : (pose ?? { position: [0, 0, 0] as Vec3, rotationY: 0, pitch: 0 })
   return (
     <group position={at.position} rotation={[0, at.rotationY, at.pitch ?? 0]} visible={pose !== null}>
       <group ref={ride}>

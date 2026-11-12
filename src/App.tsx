@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Scene } from './scene/Scene'
 import type { BikeLayout } from './scene/Bike'
 import type { StageLayout } from './scene/Stage'
+import { trackFor } from './scene/rides'
 import { LESSONS, type Section, type Vec3 } from './lesson/lessons'
 import { BIKES, DEFAULT_BIKE } from './lesson/bikes'
 
@@ -63,6 +64,8 @@ export function App() {
   const view = !stage ? FALLBACK_VIEW : active && stage.views[active.id] ? stage.views[active.id] : compact ? stage.compact : stage.overview
   // Sin escenario la moto está en el centro; en uno, donde dice el tema o el escenario (o no sale).
   const bikePose = stageId === 'bike' ? undefined : (active?.bikePose ?? stageData?.bike ?? null)
+  // La moto actúa el tema abierto (en la introducción, el primero de la lección).
+  const track = stageId === 'bike' || !bikePose ? null : trackFor((active ?? items[0]).id)
   const dim = stageData?.dim ?? 1
   const loading = !layout || !stage
 
@@ -187,6 +190,7 @@ export function App() {
             stageId={stageId}
             onStageLayout={setStageLayout}
             bikePose={bikePose}
+            track={track}
             dim={dim}
             bikeActiveId={stageId === 'bike' ? (active?.id ?? null) : null}
             items={items}

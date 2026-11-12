@@ -343,7 +343,7 @@ export const SCENARIOS: Record<string, Builder> = {
   /** Distancia de reacción + distancia de frenado, con el doble de velocidad. */
   braking: () => {
     const group = new THREE.Group()
-    group.add(straight(46))
+    group.add(straight(72))
     // Nuestro carril: velocidad normal. Carril contrario: el doble (esquema, no medidas reales).
     const s1 = named(new THREE.Group(), 'speed1')
     const r1 = named(new THREE.Group(), 'reaction1')

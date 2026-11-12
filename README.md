@@ -6,7 +6,7 @@ Son 15 lecciones, una por capítulo de la «Guía de estudio y práctica 2026»;
 
 1. Conoce la motocicleta · 2. Mandos y postura · 3. Ruta de aprendizaje y licencia · 4. Física sencilla del manejo · 5. Protección y equipo · 6. Revisión antes de salir · 7. Aprender a manejar paso a paso · 8. Maniobras esenciales · 9. Señales de tránsito y demarcaciones · 10. Conducción defensiva · 11. Curvas, pendientes, lluvia y noche · 12. Carga, pasajero y ruta · 13. Mantenimiento y cuidado · 14. Incidentes, primeros auxilios y convivencia · 15. Consulta rápida.
 
-Las lecciones 1 y 2 se estudian sobre la moto 3D. Las demás usan escenarios 3D hechos en código (carretera, patio de práctica, señales, intersección, rotonda, curva, lluvia, noche, incidente…) donde el tema activo se resalta; son esquemas pedagógicos, no medidas ni señales oficiales. Los capítulos de examen y simulacro (16 a 18) no se implementan: la educación es solo informativa.
+Las lecciones 1 y 2 se estudian sobre la moto 3D. Las demás usan escenarios 3D hechos en código (carretera, patio de práctica, señales, intersección, rotonda, curva, lluvia, noche, incidente…) donde el tema activo se resalta; son esquemas pedagógicos, no medidas ni señales oficiales. En ellos la moto actúa cada tema (frena en la zona roja, esquiva los conos, toma la curva inclinándose, se detiene ante el semáforo…); los recorridos están en `src/scene/rides.ts`. Los capítulos de examen y simulacro (16 a 18) no se implementan: la educación es solo informativa.
 Proyecto educativo, no oficial. No está afiliado a Honda ni a Yamaha. El diseño de la interfaz se inspira en la estructura y el estilo de una página de producto de moto; no usa logotipos, fotos, vídeo ni código de ninguna marca.
 
 ## Cómo ejecutarlo
