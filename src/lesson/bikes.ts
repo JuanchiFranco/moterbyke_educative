@@ -19,14 +19,8 @@ export interface BikeSpec {
   length: number
   /** Nodos de la rueda delantera y la trasera, si el modelo las trae con nombre: fijan hacia dónde mira. */
   wheels?: [string, string]
-  /** Es una fotogrametría con un trozo de suelo: la moto se separa por geometría (lo que sobresale del suelo) y se recorta lo demás. */
-  scan?: boolean
-  /** Aleja (>1) o acerca (<1) la cámara de la vista general, para modelos que se miden de otra forma. */
-  viewScale?: number
   /** Sin ruedas con nombre, el modelo se orienta por su eje más largo; true lo gira media vuelta. */
   flip?: boolean
-  /** Materiales de piezas que sobran en el modelo (un suelo, por ejemplo). */
-  hideMaterials?: string[]
   /** Nodos que sobran en el modelo (una caja de estudio, por ejemplo). */
   hideNodes?: string[]
   /**
@@ -102,22 +96,6 @@ export const BIKES: BikeSpec[] = [
     },
   },
   {
-    id: 'naked125',
-    name: 'Naked 125 cc',
-    kind: 'Naked · categoría A1',
-    url: '/models/naked125.glb',
-    length: 2.0,
-    hideMaterials: ['ground'],
-    gestures: false,
-    nodes: {},
-    credit: {
-      title: '125cc Naked Motorcycle',
-      author: 'Peter Tilley',
-      url: 'https://sketchfab.com/3d-models/125cc-naked-motorcycle-c8c2a4c00c464c99969b1fc7503b14d2',
-      ...LICENSE,
-    },
-  },
-  {
     id: 'fz16',
     name: 'Yamaha FZ 16',
     kind: 'Naked',
@@ -133,23 +111,6 @@ export const BIKES: BikeSpec[] = [
       title: 'Yamaha Motorcycle Fz 16',
       author: 'Javier.Herrera',
       url: 'https://sketchfab.com/3d-models/yamaha-motorcycle-fz-16-c522b1bae9c2425db12d435ecb5e8783',
-      ...LICENSE,
-    },
-  },
-  {
-    id: 'ninja650',
-    name: 'Kawasaki Ninja 650',
-    kind: 'Sport',
-    url: '/models/ninja650.glb',
-    length: 2.055,
-    scan: true,
-    viewScale: 1.4,
-    gestures: false,
-    nodes: {},
-    credit: {
-      title: 'Kawasaki Ninja 650',
-      author: 'alban',
-      url: 'https://sketchfab.com/3d-models/kawasaki-ninja-650-a0fcb1b23e6948639a09d804939f7c70',
       ...LICENSE,
     },
   },

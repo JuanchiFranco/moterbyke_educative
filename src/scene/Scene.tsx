@@ -110,9 +110,6 @@ export function Scene({ bike, items, activeId, seen, layout, onLayout, view, red
         dpr={[1, 2]}
         camera={{ position: view.position, fov: 34, near: 0.1, far: 50 }}
         gl={{ antialias: true, alpha: true }}
-        onCreated={({ gl }) => {
-          gl.localClippingEnabled = true
-        }}
         aria-label="Moto en 3D. Arrastra para girarla y toca un mando para estudiarlo."
         role="img"
       >

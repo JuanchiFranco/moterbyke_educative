@@ -21,7 +21,7 @@ Hecho con Vite, React, TypeScript, Three.js y React Three Fiber.
 
 ## Motos
 
-Un selector permite estudiar las lecciones sobre cinco motos (el enlace admite `?moto=` con `r1`, `vespa`, `naked125`, `fz16` o `ninja650`). La Yamaha R1 trae las piezas por separado y es la única cuyos mandos se mueven; en las demás se resaltan las piezas que el modelo permite señalar y la lección avisa de que los mandos pueden ser otros.
+Un selector permite estudiar las lecciones sobre tres motos (el enlace admite `?moto=` con `r1`, `vespa` o `fz16`). Solo hay motos cuyo modelo permite señalar sus partes: la Yamaha R1 trae las piezas por separado y es la única cuyos mandos se mueven; en la Vespa y la FZ 16 se resaltan las piezas que el modelo permite señalar y la lección avisa de que los mandos pueden ser otros.
 
 ## Créditos
 
@@ -29,9 +29,7 @@ Modelos 3D de Sketchfab, todos con licencia [CC BY 4.0](https://creativecommons.
 
 - [«Yamaha R1»](https://sketchfab.com/3d-models/yamaha-r1-7b3343ad0c0f4cbe94238c734e1b731a) de ejsnowy.
 - [«Worn Out Old School Vespa»](https://sketchfab.com/3d-models/worn-out-old-school-vespa-358a77040c53419b9bb50c462a160e6f) de Jakob_Forseth.
-- [«125cc Naked Motorcycle»](https://sketchfab.com/3d-models/125cc-naked-motorcycle-c8c2a4c00c464c99969b1fc7503b14d2) de Peter Tilley.
 - [«Yamaha Motorcycle Fz 16»](https://sketchfab.com/3d-models/yamaha-motorcycle-fz-16-c522b1bae9c2425db12d435ecb5e8783) de Javier.Herrera.
-- [«Kawasaki Ninja 650»](https://sketchfab.com/3d-models/kawasaki-ninja-650-a0fcb1b23e6948639a09d804939f7c70) de alban (fotogrametría; se recorta el suelo que trae).
 - Tipografía: Figtree, vía `@fontsource-variable/figtree`.
 
 Los textos de la lección no han sido revisados por ningún instructor de conducción: son comprensión previa a la práctica real, no la sustituyen.

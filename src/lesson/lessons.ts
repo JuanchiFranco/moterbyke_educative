@@ -63,9 +63,7 @@ const LESSON_MOTO: Lesson = {
       facts: {
         r1: { label: 'La del modelo 3D', text: 'La Yamaha R1 es una moto deportiva (sport).' },
         vespa: { label: 'La del modelo 3D', text: 'Es una scooter Vespa clásica.' },
-        naked125: { label: 'La del modelo 3D', text: 'Es una naked de 125 cc.' },
         fz16: { label: 'La del modelo 3D', text: 'Es una naked (Yamaha FZ 16).' },
-        ninja650: { label: 'La del modelo 3D', text: 'Es una moto deportiva (sport): la Kawasaki Ninja 650.' },
       },
     },
     {
@@ -156,8 +154,6 @@ const LESSON_MOTO: Lesson = {
       ],
       facts: {
         r1: { label: 'En la R1', text: '998 cc, unos 199 CV y 203 kg con líquidos y gasolina, según su ficha pública.' },
-        naked125: { label: 'En esta moto', text: 'El nombre del modelo indica 125 cc, así que corresponde a la categoría A1.' },
-        ninja650: { label: 'En esta moto', text: 'El nombre del modelo indica 650 cc, así que corresponde a la categoría A2.' },
       },
     },
     {
